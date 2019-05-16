@@ -1,0 +1,25 @@
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.6
+  - conda=4.5.12=py36_1000
+  - pip=18.1=py36_1000
+  - numpy=1.15.4=py36_blas_openblashb06ca3d_0
+  - pip:
+    - autopep8
+    - flake8
+    - python-dotenv
+    - Flask
+    - pymysql
+    - keras
+    - tensorflow
+    - gensim
+    - pymongo
+    - psycopg2-binary
+    - pytest
+    - pandas
+    - setuptools
+    - wheel
+    - -e .
+
