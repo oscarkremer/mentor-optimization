@@ -32,5 +32,5 @@ grid_search:
 	@$(PYTHON_INTERPRETER) src/api/grid_search.py --negatives $(NEGATIVES) --min-bought $(MIN_BOUGHT) --recommendation-number $(RECOMMENDATION_NUMBER)
 
 kinematics:
-	@echo "---> Running Recommendation-Algorithms"
+	@echo "---> Running Kinematics-Algorithms and Inverse Kinematics"
 	@$(PYTHON_INTERPRETER) src/api/kinematics.py 
