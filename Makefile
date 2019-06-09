@@ -34,3 +34,7 @@ grid_search:
 kinematics:
 	@echo "---> Running Kinematics-Algorithms and Inverse Kinematics"
 	@$(PYTHON_INTERPRETER) src/api/kinematics.py 
+
+clean:
+	find . -type f -name "*.py[co]" -delete
+	find . -type d -name "__pycache__" -delete
