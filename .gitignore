@@ -16,7 +16,7 @@ data/knowledge
 data/images
 data/processed/*
 data/client
-/data/logs
+data/logs
 
 
 
