@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class polinomy:
+class Polinomy:
     def __init__(self, t_i, t_f, theta_i, theta_f, omega_i, omega_f, number=10000):
         self.t_i = t_i
         self.t_f = t_f

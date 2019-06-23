@@ -28,11 +28,11 @@ if __name__ == '__main__':
     t_i = 0
     t_f = 2
     
-    poly_1 = polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
-    poly_2 = polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
-    poly_3 = polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
-    poly_4 = polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
-    poly_5 = polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
+    poly_1 = Polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
+    poly_2 = Polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
+    poly_3 = Polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
+    poly_4 = Polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
+    poly_5 = Polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
     mentor = Mentor()
     dist_4, dist_3, dist_2, dist_1 = 0, 0, 0, 0
 
@@ -51,10 +51,7 @@ if __name__ == '__main__':
         mentor.a[3]*np.cos(poly_2.thetas[i] + poly_3.thetas[i]) - 
         6*np.sin(poly_2.thetas[i]+poly_3.thetas[i]+poly_4.thetas[i]), 2))*(2/10000)
 
-    print(dist_4)
-    print(dist_3)
-    print(dist_2)
-    print(dist_1)
+    print(dist_4+dist_3+dist_2+dist_1)
 
 
     

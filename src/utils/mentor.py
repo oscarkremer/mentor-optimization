@@ -21,11 +21,11 @@ class Mentor:
         theta.append(theta5)        
         return theta
 
-    def get_position(self, theta):
+    def get_position(self, theta, z_axis):
         matrix = np.identity(4)
         for i in range(5):
             matrix = np.matmul(matrix, self.denavit(theta, i))
-        return self.separate(matrix)
+        return self.separate(matrix, z_axis)
     
     def get_orientation(self, alpha, beta, gamma):
         orientation = [[np.cos(alpha)*np.cos(beta), np.cos(alpha)*np.sin(beta)*np.sin(gamma) - np.sin(alpha)*np.cos(gamma), np.cos(alpha)*np.sin(beta)*np.cos(gamma) + np.sin(alpha)*np.sin(gamma) ],
@@ -33,8 +33,8 @@ class Mentor:
                         [-np.sin(beta), -np.cos(beta)*np.sin(gamma), np.cos(beta)*np.cos(gamma)]]
         return orientation
 
-    def separate(self, matrix):
-        pos =  np.matmul(matrix, [0,0,0,1])
+    def separate(self, matrix, z_axis):
+        pos =  np.matmul(matrix, [0,0,z_axis,1])
         rot = []
         for i in range(3):
             rot.append(matrix[i][:-1])
