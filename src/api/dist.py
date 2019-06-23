@@ -1,36 +1,5 @@
 import numpy as np 
-from src.utils import Mentor
-
-
-class polinomy:
-    def __init__(self, t_i, t_f, theta_i, theta_f, omega_i, omega_f, number=10000):
-        self.t_i = t_i
-        self.t_f = t_f
-        self.theta_i = theta_i
-        self.theta_f = theta_f
-        self.omega_i = omega_i
-        self.omega_f = omega_f
-        self.generate_points(number=number)
-
-    def generate_coeff(self):
-        times = [[1, self.t_i, np.power(self.t_i, 2), np.power(self.t_i, 3)],
-            [1, self.t_f, np.power(self.t_f, 2), np.power(self.t_f, 3)],
-            [0,  1,  2*self.t_i,  3*np.power(self.t_i, 2)],
-            [0,  1,  2*self.t_f,   3*np.power(self.t_f,2)]]
-        coef = np.matmul(np.linalg.inv(times),np.array([[self.theta_i],[self.theta_f],[self.omega_i],[self.omega_f]]))
-        self.coef = coef.reshape((coef.shape[0]))
-        self.a_0 = coef[0][0]
-        self.a_1 = coef[1][0]
-        self.a_2 = coef[2][0]
-        self.a_3 = coef[3][0]
-      
-    def generate_points(self, number):
-        points = np.linspace(self.t_i, self.t_f, number)
-        self.generate_coeff()
-        self.thetas = self.a_0 + self.a_1*(np.power(points, 1)) + self.a_2*np.power(points, 2) + self.a_3*np.power(points,3) 
-        self.delta_thetas = self.a_1 + 2*self.a_2*np.power(points,1) + 3*self.a_3*np.power(points, 2)
-
-
+from src.utils import Mentor, Polinomy
 
 if __name__ == '__main__':
 
@@ -59,11 +28,11 @@ if __name__ == '__main__':
     t_i = 0
     t_f = 2
     
-    poly_1 = polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
-    poly_2 = polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
-    poly_3 = polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
-    poly_4 = polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
-    poly_5 = polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
+    poly_1 = Polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
+    poly_2 = Polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
+    poly_3 = Polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
+    poly_4 = Polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
+    poly_5 = Polinomy(t_i, t_f, theta1_i, theta1_f, omega1_i, omega1_f)
     mentor = Mentor()
     dist_4, dist_3, dist_2, dist_1 = 0, 0, 0, 0
 
@@ -82,10 +51,7 @@ if __name__ == '__main__':
         mentor.a[3]*np.cos(poly_2.thetas[i] + poly_3.thetas[i]) - 
         6*np.sin(poly_2.thetas[i]+poly_3.thetas[i]+poly_4.thetas[i]), 2))*(2/10000)
 
-    print(dist_4)
-    print(dist_3)
-    print(dist_2)
-    print(dist_1)
+    print(dist_4+dist_3+dist_2+dist_1)
 
 
     
