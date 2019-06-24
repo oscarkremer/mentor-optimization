@@ -54,30 +54,49 @@ if __name__=="__main__":
     theta_i = [0, 0, 0, 0, 0]
     theta_f = [3.1415, 3.1415, 3.1415, 3.1415, 3.1415]
     times, thetas, omegas = create_angles(theta_i, theta_f, time, steps)
-    print(times)
-    print(thetas)
-    print(omegas)
     mentor = Mentor()
     dist_4, dist_3, dist_2, dist_1 = 0, 0, 0, 0
-    poly_1 = Polinomy(times[0][0], times[0][1], thetas[0][0], thetas[0][1], omegas[0][0], omegas[0][1])
-    poly_2 = Polinomy(times[1][0], times[1][1], thetas[1][0], thetas[1][1], omegas[1][0], omegas[1][1])
-    poly_3 = Polinomy(times[2][0], times[2][1], thetas[2][0], thetas[2][1], omegas[2][0], omegas[2][1])
-    poly_4 = Polinomy(times[3][0], times[3][1], thetas[3][0], thetas[3][1], omegas[3][0], omegas[3][1])
+    polynomies1 = []
+    for i in range(4):
+        polynomies1.append(Polinomy(times[i][0], times[i][1], thetas[i][0], thetas[i][1], omegas[i][0], omegas[i][1], number = int(10000*(times[i][1] - times[i][0])/2)))
+
+    polynomies2 = []
+    for i in range(4):
+        polynomies2.append(Polinomy(times[i][1], times[i][2], thetas[i][1], thetas[i][2], omegas[i][1], omegas[i][2], number = int(10000*(times[i][2] - times[i][1])/2)))
+
+    print(polynomies1[0].thetas)
+
+
+    print(polynomies1[0].thetas[-1])
+    print(polynomies2[0].thetas[1])
+
+    angle_1 = np.concatenate((polynomies1[0].thetas, polynomies2[0].thetas[1:])) 
+    omega_1 = np.concatenate((polynomies1[0].delta_thetas, polynomies2[0].delta_thetas[1:])) 
+    angle_2 = np.concatenate((polynomies1[1].thetas, polynomies2[1].thetas[1:])) 
+    omega_2 = np.concatenate((polynomies1[1].delta_thetas, polynomies2[1].delta_thetas[1:])) 
+    angle_3 = np.concatenate((polynomies1[2].thetas, polynomies2[2].thetas[1:])) 
+    omega_3 = np.concatenate((polynomies1[2].delta_thetas, polynomies2[2].delta_thetas[1:])) 
+    angle_4 = np.concatenate((polynomies1[3].thetas, polynomies2[3].thetas[1:])) 
+    omega_4 = np.concatenate((polynomies1[3].delta_thetas, polynomies2[3].delta_thetas[1:])) 
+    print(angle_1.shape)
+    print(angle_2.shape)
+    print(angle_3.shape)
+    print(angle_4.shape)
+
     dist_4, dist_3, dist_2, dist_1 = 0, 0, 0, 0
-    time_malha = np.linspace(0, time, 10000)
-    for i in range(10000):
-        for 
-        if time_malha[i]<times[0][1]:
-            angulo[0][i] = poly_1.thetas[i]
-            delta_angulo[0][i] = poly_1.delta_thetas[i]
 
 
-    for i in range(poly_1.steps):
-        dist_4+=6*poly_4.delta_thetas[i]*(time/poly_1.steps)
-        dist_3+=poly_3.delta_thetas[i]*np.sqrt(36 - 12*mentor.a[3]*np.sin(poly_4.thetas[i])+ np.power(mentor.a[3], 2))*(time/poly_1.steps)
-        dist_2+=poly_2.delta_thetas[i]*np.sqrt(36+np.power(mentor.a[2], 2)+np.power(mentor.a[3], 2)+2*mentor.a[2]*mentor.a[3]*np.cos(poly_3.thetas[i])-12*mentor.a[2]*np.sin(poly_4.thetas[i] + poly_3.thetas[i])
-        -12*mentor.a[3]*np.sin(poly_4.thetas[i]))*(time/poly_1.steps)
-        dist_1+=poly_1.delta_thetas[i]*np.sqrt(np.power(mentor.a[2]*np.cos(poly_2.thetas[i]) + 
-        mentor.a[3]*np.cos(poly_2.thetas[i] + poly_3.thetas[i]) - 
-        6*np.sin(poly_2.thetas[i]+poly_3.thetas[i]+poly_4.thetas[i]), 2))*(time/poly_1.steps)
+
+    for i in range(angle_1.shape[0]):
+        dist_4+=6*omega_4[i]*(time/angle_1.shape[0])
+        
+        dist_3+=omega_3[i]*np.sqrt(36 - 12*mentor.a[3]*np.sin(angle_4[i])+ np.power(mentor.a[3], 2))*(time/angle_1.shape[0])
+        
+        dist_2+=omega_2[i]*np.sqrt(36+np.power(mentor.a[2], 2)+np.power(mentor.a[3], 2)+2*mentor.a[2]*mentor.a[3]*np.cos(angle_3[i])-12*mentor.a[2]*np.sin(angle_4[i] + angle_3[i])
+        -12*mentor.a[3]*np.sin(angle_4[i]))*(time/angle_1.shape[0])
+    
+        dist_1+=omega_1[i]*np.sqrt(np.power(mentor.a[2]*np.cos(angle_2[i]) + 
+        mentor.a[3]*np.cos(angle_2[i] + angle_3[i]) - 
+        6*np.sin(angle_2[i] + angle_3[i] + angle_4[i]), 2))*(time/angle_1.shape[0])
+    
     print(dist_1 + dist_2 + dist_3 + dist_4)
