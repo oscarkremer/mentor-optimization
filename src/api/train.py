@@ -86,8 +86,6 @@ if __name__=="__main__":
         index = min([angle_1.shape[0], angle_2.shape[0], angle_3.shape[0], angle_4.shape[0]])
         dist_4, dist_3, dist_2, dist_1 = 0, 0, 0, 0
 
-
-
         for i in range(index):
             dist_4+=6*omega_4[i]*(time/angle_4.shape[0])
             
