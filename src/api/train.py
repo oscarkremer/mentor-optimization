@@ -54,48 +54,47 @@ if __name__=="__main__":
     time = 2
     theta_i = [0, 0, 0, 0, 0]
     theta_f = [3.1415, 3.1415, 3.1415, 3.1415, 3.1415]
-    for i in range(100):
-        times, thetas, omegas = create_angles(theta_i, theta_f, time, steps)
-        mentor = Mentor()
-        polynomies = []
+    times, thetas, omegas = create_angles(theta_i, theta_f, time, steps)
+    mentor = Mentor()
+    polynomies = []
+    for j in range(steps-1):
+        sub_polynomies = []
+        for i in range(5):
+            sub_polynomies.append(Polinomy(times[i][j], times[i][j+1], thetas[i][j], thetas[i][j+1], omegas[i][j], omegas[i][j+1], number = np.ceil(100*(times[i][j+1] - times[i][j])/time)))
+        polynomies.append(sub_polynomies)
 
-        for j in range(steps-1):
-            sub_polynomies = []
-            for i in range(4):
-                sub_polynomies.append(Polinomy(times[i][j], times[i][j+1], thetas[i][j], thetas[i][j+1], omegas[i][j], omegas[i][j+1], number = np.ceil(100000*(times[i][j+1] - times[i][j])/time)))
-            polynomies.append(sub_polynomies)
+    angle_1 = np.array([theta_i[0]])
+    angle_2 = np.array([theta_i[1]])
+    angle_3 = np.array([theta_i[2]])
+    angle_4 = np.array([theta_i[3]])
+    angle_5 = np.array([theta_i[4]])
+    for i in range(steps-1):
+        angle_1 = np.concatenate((angle_1, polynomies[i][0].thetas[1:])) 
+        angle_2 = np.concatenate((angle_2, polynomies[i][1].thetas[1:])) 
+        angle_3 = np.concatenate((angle_3, polynomies[i][2].thetas[1:])) 
+        angle_4 = np.concatenate((angle_4, polynomies[i][3].thetas[1:])) 
+        angle_5 = np.concatenate((angle_5, polynomies[i][4].thetas[1:])) 
 
-        angle_1 = np.array([theta_i[0]])
-        angle_2 = np.array([theta_i[1]])
-        angle_3 = np.array([theta_i[2]])
-        angle_4 = np.array([theta_i[3]])
-        omega_1 = np.array([0])
-        omega_2 = np.array([0])
-        omega_3 = np.array([0])
-        omega_4 = np.array([0])
-        for i in range(steps-1):
-            angle_1 = np.concatenate((angle_1, polynomies[i][0].thetas[1:])) 
-            angle_2 = np.concatenate((angle_2, polynomies[i][1].thetas[1:])) 
-            angle_3 = np.concatenate((angle_3, polynomies[i][2].thetas[1:])) 
-            angle_4 = np.concatenate((angle_4, polynomies[i][3].thetas[1:])) 
-            omega_1 = np.concatenate((omega_1, polynomies[i][0].delta_thetas[1:])) 
-            omega_2 = np.concatenate((omega_2, polynomies[i][1].delta_thetas[1:])) 
-            omega_3 = np.concatenate((omega_3, polynomies[i][2].delta_thetas[1:])) 
-            omega_4 = np.concatenate((omega_4, polynomies[i][3].delta_thetas[1:])) 
-
-        index = min([angle_1.shape[0], angle_2.shape[0], angle_3.shape[0], angle_4.shape[0]])
-        dist_4, dist_3, dist_2, dist_1 = 0, 0, 0, 0
-
-        for i in range(index):
-            dist_4+=6*omega_4[i]*(time/angle_4.shape[0])
-            
-            dist_3+=omega_3[i]*np.sqrt(36 - 12*mentor.a[3]*np.sin(angle_4[i])+ np.power(mentor.a[3], 2))*(time/angle_3.shape[0])
-            
-            dist_2+=omega_2[i]*np.sqrt(36+np.power(mentor.a[2], 2)+np.power(mentor.a[3], 2)+2*mentor.a[2]*mentor.a[3]*np.cos(angle_3[i])-12*mentor.a[2]*np.sin(angle_4[i] + angle_3[i])
-            -12*mentor.a[3]*np.sin(angle_4[i]))*(time/angle_2.shape[0])
-        
-            dist_1+=omega_1[i]*np.sqrt(np.power(mentor.a[2]*np.cos(angle_2[i]) + 
-            mentor.a[3]*np.cos(angle_2[i] + angle_3[i]) - 
-            6*np.sin(angle_2[i] + angle_3[i] + angle_4[i]), 2))*(time/angle_1.shape[0])
-        
-        print(dist_1 + dist_2 + dist_3 + dist_4)
+    index = np.min([angle_1.shape[0], angle_2.shape[0], angle_3.shape[0], angle_4.shape[0], angle_5.shape[0]])
+    angle_1 = angle_1[0:index]
+    angle_2 = angle_2[0:index]
+    angle_3 = angle_3[0:index]
+    angle_4 = angle_4[0:index]
+    angle_5 = angle_5[0:index]
+    angles = []
+    angles.append(angle_1)
+    angles.append(angle_2)
+    angles.append(angle_3)
+    angles.append(angle_4)
+    angles.append(angle_5)
+    angles = np.transpose(angles)
+    for angle in angles:
+        print(angle)
+        print(angle[0])
+        print(angle[1])
+        print(angle[2])
+        print(angle[3])
+        print(angle[4])    
+        pos, rot = mentor.get_position(angle, 6)
+        print('Position: ')
+        print(pos[0:3])
