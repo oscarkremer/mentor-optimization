@@ -3,6 +3,7 @@ import numpy as np
 
 class Polinomy:
     def __init__(self, t_i, t_f, theta_i, theta_f, omega_i, omega_f, number=10000):
+        self.steps = number
         self.t_i = t_i
         self.t_f = t_f
         self.theta_i = theta_i
