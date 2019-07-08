@@ -32,25 +32,14 @@ def create_angles(theta_i, theta_f, final_time, steps):
         times.append(time)
     return times, thetas, omegas
 
-def derivative(theta, delta):
-    derivative = []
-    for i in range(len(theta)):
-        if i == 0:
-            derivative.append(0)
-        else:
-            derivative.append((theta[i] - theta[i-1])/delta)
-    return derivative
-
-def execute_grid_search(robot):
-    angles = create_angles()
-    pool = Pool(multiprocessing.cpu_count())
-    results = pool.map(partial(find_colision), angles)
-    pool.close()
-    pool.join()
-    print(results)
+def integration(points):
+    dist = 0 
+    for i in range(points.shape[0]-1):
+        dist+=np.sqrt(np.power(points[i][0] - points[i+1][0], 2)+np.power(points[i][1] - points[i+1][1], 2)+np.power(points[i][2] - points[i+1][2], 2))
+    return dist
 
 if __name__=="__main__":
-    steps = 5
+    steps = 10
     time = 2
     theta_i = [0, 0, 0, 0, 0]
     theta_f = [3.1415, 3.1415, 3.1415, 3.1415, 3.1415]
@@ -60,7 +49,7 @@ if __name__=="__main__":
     for j in range(steps-1):
         sub_polynomies = []
         for i in range(5):
-            sub_polynomies.append(Polinomy(times[i][j], times[i][j+1], thetas[i][j], thetas[i][j+1], omegas[i][j], omegas[i][j+1], number = np.ceil(100*(times[i][j+1] - times[i][j])/time)))
+            sub_polynomies.append(Polinomy(times[i][j], times[i][j+1], thetas[i][j], thetas[i][j+1], omegas[i][j], omegas[i][j+1], number = np.ceil(1000*(times[i][j+1] - times[i][j])/time)))
         polynomies.append(sub_polynomies)
 
     angle_1 = np.array([theta_i[0]])
@@ -88,13 +77,9 @@ if __name__=="__main__":
     angles.append(angle_4)
     angles.append(angle_5)
     angles = np.transpose(angles)
+    points = []
     for angle in angles:
-        print(angle)
-        print(angle[0])
-        print(angle[1])
-        print(angle[2])
-        print(angle[3])
-        print(angle[4])    
         pos, rot = mentor.get_position(angle, 6)
-        print('Position: ')
-        print(pos[0:3])
+        points.append(pos[0:3])
+    
+    integration(np.array(points))
