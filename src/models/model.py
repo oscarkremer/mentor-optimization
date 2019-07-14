@@ -11,9 +11,10 @@ from src.utils.numerical import integration, create_angles
 
 class Node:
     def __init__(self, theta_i, theta_f, time, steps):
+        angles = []
         polynomies = []
-        self.times, self.thetas, self.omegas = create_angles(theta_i, theta_f, time, steps)
-        self.mentor = Mentor()
+        times, thetas, omegas = create_angles(theta_i, theta_f, time, steps)
+        mentor = Mentor()
         for j in range(steps-1):
             sub_polynomies = []
             for i in range(5):
@@ -37,7 +38,6 @@ class Node:
         angle_3 = angle_3[0:index]
         angle_4 = angle_4[0:index]
         angle_5 = angle_5[0:index]
-        angles = []
         angles.append(angle_1)
         angles.append(angle_2)
         angles.append(angle_3)
@@ -49,4 +49,4 @@ class Node:
             pos, rot = mentor.get_position(angle, 6)
             points.append(pos[0:3])
         
-        integration(np.array(points))
+        self.dist = integration(np.array(points))
