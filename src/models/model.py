@@ -12,7 +12,8 @@ class Population:
     def __init__(self, size, generations, p_c, p_m, theta_i, theta_f, time, steps):
         self.size = size
         self.generations = generations
-        self.p_c = p_c
+        self.p_c1 = p_c1
+        self.p_c2 = p_c2
         self.p_m = p_m
         self.population_initialization(theta_i, theta_f, time, steps)
 
@@ -38,11 +39,19 @@ class Population:
                 self.population.append([mutation.dist, mutation])
        
     def selection(self, number_bests = 2):
-        test = (sorted(self.population, key = lambda x: float(x[0])))[0:number_bests]
-        return test
+        selected = (sorted(self.population, key = lambda x: float(x[0])))[0:number_bests]
+        return selected
    
     def cross_over(self, parent1, parent2, theta_i, theta_f, time, steps):
+        if parent1.dist < parent2.dist:
+            pass
+        else:
+            temp = parent2
+            parent2 = parent1
+            parent1 = temp
+
         element = Node(theta_i, theta_f, time, steps)
+
         if random.random() <= self.p_c:
             element.joint1 = parent1.joint1
         else:
