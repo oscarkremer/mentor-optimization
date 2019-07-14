@@ -25,15 +25,13 @@ dirs:
 	@mkdir -p data/raw
 	@echo "---> Done"
 
-grid_search:
-	@echo "---> Grid-searching models"
-	@echo "---> It will find the best models for the recommendation algorithm"
-	@read -p "---> Press Enter to continue. [ctrl-c to abort]" ok
-	@$(PYTHON_INTERPRETER) src/api/grid_search.py --negatives $(NEGATIVES) --min-bought $(MIN_BOUGHT) --recommendation-number $(RECOMMENDATION_NUMBER)
-
 kinematics:
 	@echo "---> Running Kinematics-Algorithms and Inverse Kinematics"
 	@$(PYTHON_INTERPRETER) src/api/kinematics.py 
+
+train:
+	@echo "---> Running Genetic Algorithms to Optimize Trajectory Planning"
+	@$(PYTHON_INTERPRETER) src/api/train.py 
 
 clean:
 	find . -type f -name "*.py[co]" -delete
