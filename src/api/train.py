@@ -6,37 +6,11 @@ import math
 import numpy as np
 from functools import partial
 from multiprocessing import Pool
-from src.utils import Mentor, Polinomy
+from src.utils import Mentor, Polinomy, integration
 
-def create_angles(theta_i, theta_f, final_time, steps):
-    thetas, omegas, times = [], [], []
-    for j in range(5):
-        theta, omega, time = [], [], []
-        theta.append(theta_i[j])
-        omega.append(0)
-        time.append(0)
-        for i in range(steps-2):
-            theta.append((theta_f[j] - theta_i[j])*random.random() + theta_i[j])
-            omega.append(random.random())
-            time.append(final_time*random.random())
-        omega.append(0)
-        theta.append(theta_f[j])
-        time.append(final_time)
-        time.sort()
-        if theta_i[j] < theta_f[j]:
-            theta.sort()
-        else:
-            theta.sort(reverse=True)    
-        omegas.append(omega)
-        thetas.append(theta)
-        times.append(time)
-    return times, thetas, omegas
 
-def integration(points):
-    dist = 0 
-    for i in range(points.shape[0]-1):
-        dist+=np.sqrt(np.power(points[i][0] - points[i+1][0], 2)+np.power(points[i][1] - points[i+1][1], 2)+np.power(points[i][2] - points[i+1][2], 2))
-    return dist
+
+
 
 if __name__=="__main__":
     steps = 10
@@ -51,7 +25,6 @@ if __name__=="__main__":
         for i in range(5):
             sub_polynomies.append(Polinomy(times[i][j], times[i][j+1], thetas[i][j], thetas[i][j+1], omegas[i][j], omegas[i][j+1], number = np.ceil(1000*(times[i][j+1] - times[i][j])/time)))
         polynomies.append(sub_polynomies)
-
     angle_1 = np.array([theta_i[0]])
     angle_2 = np.array([theta_i[1]])
     angle_3 = np.array([theta_i[2]])
