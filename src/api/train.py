@@ -16,6 +16,6 @@ if __name__=="__main__":
     time = 2
     theta_i = [0, 0, 0, 0, 0]
     theta_f = [3.1415, 3.1415/6, 3.1415/6, 3.1415/2, 3.1415/2]
-    test = Population(100, 2, 0.9, 0.05, theta_i, theta_f, time, steps)
+    test = Population(100, 4, 0.7, 0.05, theta_i, theta_f, time, steps)
     test.generation(theta_i, theta_f, time, steps)
         

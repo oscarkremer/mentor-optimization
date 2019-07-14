@@ -12,8 +12,7 @@ class Population:
     def __init__(self, size, generations, p_c, p_m, theta_i, theta_f, time, steps):
         self.size = size
         self.generations = generations
-        self.p_c1 = p_c1
-        self.p_c2 = p_c2
+        self.p_c = p_c
         self.p_m = p_m
         self.population_initialization(theta_i, theta_f, time, steps)
 
@@ -29,6 +28,7 @@ class Population:
     def generation(self, theta_i, theta_f, time, steps):
         for i in range(self.generations):
             self.population = self.selection(number_bests = 10)
+            print(self.population)
             members = []
             for member in self.population:
                 members.append(member[1])
@@ -37,7 +37,8 @@ class Population:
                 new_element = self.cross_over(combination[0], combination[1], theta_i, theta_f, time, steps)
                 mutation = self.mutation(new_element, theta_i, theta_f, time, steps)
                 self.population.append([mutation.dist, mutation])
-       
+        
+
     def selection(self, number_bests = 2):
         selected = (sorted(self.population, key = lambda x: float(x[0])))[0:number_bests]
         return selected
