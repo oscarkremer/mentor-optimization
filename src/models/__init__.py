@@ -1,5 +1,5 @@
-from .model import Node
+from .model import Population
 
 __all__ = [
-    'model',
+    'model'
 ]
