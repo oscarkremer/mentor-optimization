@@ -34,7 +34,7 @@ class Population:
         points = pd.DataFrame()
         best_of_generation = []
         for i in range(self.generations):
-            self.population = self.selection(number_bests = 100)
+            self.population = self.selection(number_bests = 10)
             best_of_generation.append(self.selection(number_bests = 1)[0][0])
             print(best_of_generation)
             self.analysis()
