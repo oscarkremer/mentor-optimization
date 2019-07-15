@@ -34,7 +34,7 @@ class Population:
         points = pd.DataFrame()
         best_of_generation = []
         for i in range(self.generations):
-            self.population = self.selection(number_bests = 10)
+            self.population = self.selection(number_bests = 100)
             best_of_generation.append(self.selection(number_bests = 1)[0][0])
             print(best_of_generation)
             self.analysis()
@@ -151,19 +151,19 @@ class Population:
         prob_5 = random.random()
         if prob_1 <= self.p_m:
             deltas, delta_thetas, delta_omegas = create_angles(theta_i[0], theta_f[0], time, steps)
-            self.joint1 = [deltas, delta_thetas, delta_omegas]
+            element.joint1 = [deltas, delta_thetas, delta_omegas]
         if prob_2 <= self.p_m:
             deltas, delta_thetas, delta_omegas = create_angles(theta_i[1], theta_f[1], time, steps)
-            self.joint2 = [deltas, delta_thetas, delta_omegas]
+            element.joint2 = [deltas, delta_thetas, delta_omegas]
         if prob_3 <= self.p_m:
             deltas, delta_thetas, delta_omegas = create_angles(theta_i[2], theta_f[2], time, steps)
-            self.joint3 = [deltas, delta_thetas, delta_omegas]
+            element.joint3 = [deltas, delta_thetas, delta_omegas]
         if prob_4 <= self.p_m:
             deltas, delta_thetas, delta_omegas = create_angles(theta_i[3], theta_f[3], time, steps)
-            self.joint4 = [deltas, delta_thetas, delta_omegas]
+            element.joint4 = [deltas, delta_thetas, delta_omegas]
         if prob_5 <= self.p_m:
             deltas, delta_thetas, delta_omegas = create_angles(theta_i[4], theta_f[4], time, steps)
-            self.joint5 = [deltas, delta_thetas, delta_omegas]
+            element.joint5 = [deltas, delta_thetas, delta_omegas]
 
         element.dist_calc(steps, theta_i, time)
         return element    

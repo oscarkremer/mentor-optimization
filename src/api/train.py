@@ -12,7 +12,7 @@ from src.utils import Mentor, Polinomy, integration
 
 
 if __name__=="__main__":
-    steps = 5
+    steps = 2
     time = 5
     robot = Mentor()
     pos = np.zeros(3)
@@ -56,7 +56,7 @@ if __name__=="__main__":
     angles[1] = 3.141592*angles[1]/180
     angles[2] = 3.141592*angles[2]/180
     rot  = robot.get_orientation(angles[0], angles[1], angles[2])
-    matrix_0G = [[rot[0][0], rot[0][1], rot[0][2], pos[0]],
+    matrix_G0 = [[rot[0][0], rot[0][1], rot[0][2], pos[0]],
     [rot[1][0], rot[1][1], rot[1][2], pos[1]],
     [rot[2][0], rot[2][1], rot[2][2], pos[2]],
     [0, 0, 0, 1]]
@@ -64,13 +64,13 @@ if __name__=="__main__":
     [0, 1, 0, 0],
     [0, 0, 1, -6],
     [0, 0, 0, 1]]
-    matrix = np.matmul(matrix_0G, matrix_5G)
+    matrix = np.matmul(matrix_G0, matrix_5G)
     positions = [matrix[0][3], matrix[1][3], matrix[2][3]]
-    theta_f = robot.get_angles(pos, rot)
-
-    print(theta_f)
+    theta_f = robot.get_angles(positions, rot)
+    pos, rot = robot.get_position(theta_f, 6)
+    print(pos)
     #theta_i = [0, 0, 0, 0, 0]
 #   theta_f = [3.1415, 3.1415/6, 3.1415/6, 3.1415/2, 3.1415/2]
-    test = Population(400, 20, 0.7, 0.4, theta_i, theta_f, time, steps)
+    test = Population(14, 2, 0.7, 0.4, theta_i, theta_f, time, steps)
     test.generation(theta_i, theta_f, time, steps)
         
