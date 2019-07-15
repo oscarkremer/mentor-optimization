@@ -6,8 +6,8 @@ class Mentor:
         self.a = [0, 0, 17.2739, 15.5, 0]
         self.d = [0, 0, 0, 0, 0]
         
-    def get_angles(self, pos, angles):
-        orientation = self.get_orientation(angles[0], angles[1], angles[2])
+    def get_angles(self, pos, rot):
+        orientation = rot 
         theta = []
         theta1 = np.arctan(pos[1]/pos[0])
         theta3 = np.arccos((pos[0]**2 + pos[1]**2 + pos[2]**2 - self.a[2]**2 - self.a[3]**2)/(2*self.a[2]*self.a[3]))

@@ -20,7 +20,11 @@ class Population:
         for i in range(self.size):
             try:
                 element = Node(theta_i, theta_f, time, steps)
-                self.population.append([element.dist, element])
+                if element.constraint:
+                    pass
+                else:
+                    print('adding')
+                    self.population.append([element.dist, element])
             except:
                 pass
             
@@ -30,7 +34,7 @@ class Population:
         points = pd.DataFrame()
         best_of_generation = []
         for i in range(self.generations):
-            self.population = self.selection(number_bests = 5)
+            self.population = self.selection(number_bests = 100)
             best_of_generation.append(self.selection(number_bests = 1)[0][0])
             print(best_of_generation)
             self.analysis()
@@ -38,13 +42,20 @@ class Population:
             for member in self.population:
                 members.append(member[1])
             combinations = list(itertools.combinations(members, 2))
+            random.shuffle(combinations)
             for combination in combinations:
                 try:
                     new_element = self.cross_over(combination[0], combination[1], theta_i, theta_f, time, steps)
                     mutation = self.mutation(new_element, theta_i, theta_f, time, steps)
-                    self.population.append([mutation.dist, mutation])
-                except:
+                    if mutation.constraint:
+                        pass
+                    else:
+                        self.population.append([mutation.dist, mutation])
+                except Exception as e:
+                    print(e)
                     pass
+                if len(self.population) == self.size:
+                    break
         
         dataframe['distance'] = best_of_generation
         best_of_all = self.selection(number_bests = 1)[0]
@@ -69,14 +80,14 @@ class Population:
 
 
     def prob_adaptation(self, fitness):
-        if fitness > self.average:
+        if fitness > self.average and (self.maximum-self.average) > 0.00001:
             self.p_c = (self.maximum-fitness)/(self.maximum-self.average)
-            self.p_m = 0.4*(self.maximum-fitness)/(self.maximum-self.average)
+            self.p_m = (self.maximum-fitness)/(self.maximum-self.average)
             print(self.p_c)
             print(self.p_m)
         else:
             self.p_c = 0.7
-            self.p_m = 0.05
+            self.p_m = 0.5
             print(self.p_c)
             print(self.p_m)
             
@@ -102,45 +113,57 @@ class Population:
         self.prob_adaptation(1/(parent1.dist))
         element = Node(theta_i, theta_f, time, steps)
         
-        if random.random() <= self.p_c:
-            joint_prob = random.random()
-            if joint_prob <= 0.2 and joint_prob > 0:
-                element.joint1 = parent2.joint1
-            if joint_prob <= 0.4 and joint_prob > 0.2:
-                element.joint2 = parent2.joint2
-            if joint_prob <= 0.6 and joint_prob > 0.4:
-                element.joint3 = parent2.joint3
-            if joint_prob <= 0.8 and joint_prob > 0.6:
-                element.joint4 = parent2.joint4
-            if joint_prob <= 1 and joint_prob > 0.8:
-                element.joint5 = parent2.joint5
+        prob_1 = random.random()
+        prob_2 = random.random()
+        prob_3 = random.random()
+        prob_4 = random.random()
+        prob_5 = random.random()
+
+        if prob_1 <= self.p_c:
+            element.joint1 = parent2.joint1
         else:
             element.joint1 = parent1.joint1
+        if prob_2 <= self.p_c:
+            element.joint2 = parent2.joint2
+        else:
             element.joint2 = parent1.joint2
+        if prob_3 <= self.p_c:
+            element.joint3 = parent2.joint3
+        else:
             element.joint3 = parent1.joint3
+        if prob_4 <= self.p_c:
+            element.joint4 = parent2.joint4
+        else:
             element.joint4 = parent1.joint4
+        if prob_5 <= self.p_c:
+            element.joint5 = parent2.joint5
+        else:
             element.joint5 = parent1.joint5
+        
         element.dist_calc(steps, theta_i, time)
         return element
 
     def mutation(self, element, theta_i, theta_f, time, steps):
-        if random.random() <= self.p_m:
-            joint_prob = random.random()
-            if joint_prob < 0.2 and joint_prob > 0:
-                deltas, delta_thetas, delta_omegas = create_angles(theta_i[0], theta_f[0], time, steps)
-                self.joint1 = [deltas, delta_thetas, delta_omegas]
-            if joint_prob < 0.4 and joint_prob > 0.3:
-                deltas, delta_thetas, delta_omegas = create_angles(theta_i[1], theta_f[1], time, steps)
-                self.joint2 = [deltas, delta_thetas, delta_omegas]
-            if joint_prob < 0.6 and joint_prob  > 0.4:
-                deltas, delta_thetas, delta_omegas = create_angles(theta_i[2], theta_f[2], time, steps)
-                self.joint3 = [deltas, delta_thetas, delta_omegas]
-            if joint_prob < 0.8 and joint_prob > 0.6:
-                deltas, delta_thetas, delta_omegas = create_angles(theta_i[3], theta_f[3], time, steps)
-                self.joint4 = [deltas, delta_thetas, delta_omegas]
-            if joint_prob < 1 and joint_prob > 0.8:
-                deltas, delta_thetas, delta_omegas = create_angles(theta_i[4], theta_f[4], time, steps)
-                self.joint5 = [deltas, delta_thetas, delta_omegas]
+        prob_1 = random.random()
+        prob_2 = random.random()
+        prob_3 = random.random()
+        prob_4 = random.random()
+        prob_5 = random.random()
+        if prob_1 <= self.p_m:
+            deltas, delta_thetas, delta_omegas = create_angles(theta_i[0], theta_f[0], time, steps)
+            self.joint1 = [deltas, delta_thetas, delta_omegas]
+        if prob_2 <= self.p_m:
+            deltas, delta_thetas, delta_omegas = create_angles(theta_i[1], theta_f[1], time, steps)
+            self.joint2 = [deltas, delta_thetas, delta_omegas]
+        if prob_3 <= self.p_m:
+            deltas, delta_thetas, delta_omegas = create_angles(theta_i[2], theta_f[2], time, steps)
+            self.joint3 = [deltas, delta_thetas, delta_omegas]
+        if prob_4 <= self.p_m:
+            deltas, delta_thetas, delta_omegas = create_angles(theta_i[3], theta_f[3], time, steps)
+            self.joint4 = [deltas, delta_thetas, delta_omegas]
+        if prob_5 <= self.p_m:
+            deltas, delta_thetas, delta_omegas = create_angles(theta_i[4], theta_f[4], time, steps)
+            self.joint5 = [deltas, delta_thetas, delta_omegas]
 
         element.dist_calc(steps, theta_i, time)
         return element    

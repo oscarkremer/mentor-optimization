@@ -26,11 +26,11 @@ class Node:
         angles, points, polynomies = [], [], []
         for j in range(steps-1):
             sub_polynomies = []
-            sub_polynomies.append(Polinomy(self.joint1[0][j], self.joint1[0][j+1], self.joint1[1][j], self.joint1[1][j+1], self.joint1[2][j], self.joint1[2][j+1], number = np.ceil(1000*(self.joint1[0][j+1] - self.joint1[0][j])/time)))
-            sub_polynomies.append(Polinomy(self.joint2[0][j], self.joint2[0][j+1], self.joint2[1][j], self.joint2[1][j+1], self.joint2[2][j], self.joint2[2][j+1], number = np.ceil(1000*(self.joint2[0][j+1] - self.joint2[0][j])/time)))
-            sub_polynomies.append(Polinomy(self.joint3[0][j], self.joint3[0][j+1], self.joint3[1][j], self.joint3[1][j+1], self.joint3[2][j], self.joint3[2][j+1], number = np.ceil(1000*(self.joint3[0][j+1] - self.joint3[0][j])/time)))
-            sub_polynomies.append(Polinomy(self.joint4[0][j], self.joint4[0][j+1], self.joint4[1][j], self.joint4[1][j+1], self.joint4[2][j], self.joint4[2][j+1], number = np.ceil(1000*(self.joint4[0][j+1] - self.joint4[0][j])/time)))
-            sub_polynomies.append(Polinomy(self.joint5[0][j], self.joint5[0][j+1], self.joint5[1][j], self.joint5[1][j+1], self.joint5[2][j], self.joint5[2][j+1], number = np.ceil(1000*(self.joint5[0][j+1] - self.joint5[0][j])/time)))
+            sub_polynomies.append(Polinomy(self.joint1[0][j], self.joint1[0][j+1], self.joint1[1][j], self.joint1[1][j+1], self.joint1[2][j], self.joint1[2][j+1], number = np.ceil(500*(self.joint1[0][j+1] - self.joint1[0][j])/time)))
+            sub_polynomies.append(Polinomy(self.joint2[0][j], self.joint2[0][j+1], self.joint2[1][j], self.joint2[1][j+1], self.joint2[2][j], self.joint2[2][j+1], number = np.ceil(500*(self.joint2[0][j+1] - self.joint2[0][j])/time)))
+            sub_polynomies.append(Polinomy(self.joint3[0][j], self.joint3[0][j+1], self.joint3[1][j], self.joint3[1][j+1], self.joint3[2][j], self.joint3[2][j+1], number = np.ceil(500*(self.joint3[0][j+1] - self.joint3[0][j])/time)))
+            sub_polynomies.append(Polinomy(self.joint4[0][j], self.joint4[0][j+1], self.joint4[1][j], self.joint4[1][j+1], self.joint4[2][j], self.joint4[2][j+1], number = np.ceil(500*(self.joint4[0][j+1] - self.joint4[0][j])/time)))
+            sub_polynomies.append(Polinomy(self.joint5[0][j], self.joint5[0][j+1], self.joint5[1][j], self.joint5[1][j+1], self.joint5[2][j], self.joint5[2][j+1], number = np.ceil(500*(self.joint5[0][j+1] - self.joint5[0][j])/time)))
             polynomies.append(sub_polynomies)
         angle_1 = np.array([theta_i[0]])
         angle_2 = np.array([theta_i[1]])
@@ -51,9 +51,24 @@ class Node:
         self.angle_3 = angle_3[0:index]
         self.angle_4 = angle_4[0:index]
         self.angle_5 = angle_5[0:index]
+        self.test_velocity(time)
+
         angles = np.transpose([angle_1[0:index], angle_2[0:index], angle_3[0:index], angle_4[0:index], angle_5[0:index]])
         for angle in angles:
-            pos, rot = mentor.get_position(angle, 0)
+            pos, rot = mentor.get_position(angle, 6)
             points.append(pos[0:3])
         self.points = points
         self.dist = integration(np.array(points))
+
+    def test_velocity(self, time):
+        ang_vel1, ang_vel2, ang_vel3, ang_vel4, ang_vel5 = [],[],[],[],[]
+        for i in range(self.angle_1.shape[0]-1):
+            ang_vel1.append(abs(self.angle_1[i+1] - self.angle_1[i])/(time/500))
+            ang_vel2.append(abs(self.angle_2[i+1] - self.angle_2[i])/(time/500))
+            ang_vel3.append(abs(self.angle_3[i+1] - self.angle_3[i])/(time/500))
+            ang_vel4.append(abs(self.angle_4[i+1] - self.angle_4[i])/(time/500))
+            ang_vel5.append(abs(self.angle_5[i+1] - self.angle_5[i])/(time/500))
+        if max(ang_vel1) > 1 or max(ang_vel2) > 1 or max(ang_vel3) > 1 or max(ang_vel4) >1 or max(ang_vel5) > 1:
+            self.constraint = False
+        else:
+            self.constraint = False
