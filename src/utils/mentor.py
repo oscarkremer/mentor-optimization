@@ -7,10 +7,11 @@ class Mentor:
         self.d = [0, 0, 0, 0, 0]
         
     def get_angles(self, pos, angles):
-        orientation = angles
+        orientation = self.get_orientation(angles[0], angles[1], angles[2])
         theta = []
         theta1 = np.arctan(pos[1]/pos[0])
         theta3 = np.arccos((pos[0]**2 + pos[1]**2 + pos[2]**2 - self.a[2]**2 - self.a[3]**2)/(2*self.a[2]*self.a[3]))
+        theta3 = np.nan_to_num(theta3)
         theta2 = -theta3 + np.arcsin(((-np.cos(theta3)*self.a[2] - self.a[3])*pos[2] + np.sin(theta3)*self.a[2]*(np.sin(theta1)*pos[1]+pos[0]*np.cos(theta1)))/(np.power(np.cos(theta1)*pos[0]+np.sin(theta1)*pos[1], 2)+ pos[2]*pos[2]))
         theta4 = np.arcsin(np.sin(theta2+theta3)*orientation[2][2] - np.cos(theta1)*np.cos(theta2+theta3)*orientation[0][2] - np.sin(theta1)*np.cos(theta2+theta3)*orientation[1][2])
         theta5 = np.arcsin(np.sin(theta1)*orientation[0][0] - np.cos(theta1)*orientation[1][0])

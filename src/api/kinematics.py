@@ -11,7 +11,7 @@ if __name__ == "__main__":
     angles[4] = input('Theta 5')
 
 
-    pos, rot = robot.get_position(angles, 6)
+    pos, rot = robot.get_position(angles, 0)
     print('Position: ')
     print(pos)
     print('Rotation Matrix: ')

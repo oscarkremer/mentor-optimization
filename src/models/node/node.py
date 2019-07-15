@@ -44,10 +44,16 @@ class Node:
             angle_4 = np.concatenate((angle_4, polynomies[i][3].thetas[1:])) 
             angle_5 = np.concatenate((angle_5, polynomies[i][4].thetas[1:])) 
 
+        
         index = np.min([angle_1.shape[0], angle_2.shape[0], angle_3.shape[0], angle_4.shape[0], angle_5.shape[0]])
+        self.angle_1 = angle_1[0:index]
+        self.angle_2 = angle_2[0:index]
+        self.angle_3 = angle_3[0:index]
+        self.angle_4 = angle_4[0:index]
+        self.angle_5 = angle_5[0:index]
         angles = np.transpose([angle_1[0:index], angle_2[0:index], angle_3[0:index], angle_4[0:index], angle_5[0:index]])
         for angle in angles:
-            pos, rot = mentor.get_position(angle, 6)
+            pos, rot = mentor.get_position(angle, 0)
             points.append(pos[0:3])
         self.points = points
         self.dist = integration(np.array(points))
