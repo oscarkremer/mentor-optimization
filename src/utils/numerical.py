@@ -15,7 +15,7 @@ def create_angles(theta_i, theta_f, final_time, steps):
     time.append(0)
     for i in range(steps-2):
         theta.append((theta_f - theta_i)*random.random() + theta_i)
-        omega.append(random.random())
+        omega.append(5*random.random())
         time.append(final_time*random.random())
     omega.append(0)
     theta.append(theta_f)
@@ -24,5 +24,5 @@ def create_angles(theta_i, theta_f, final_time, steps):
     if theta_i < theta_f:
         theta.sort()
     else:
-        theta.sort(reverse=True)    
+        theta.sort(reverse=True)
     return time, theta, omega

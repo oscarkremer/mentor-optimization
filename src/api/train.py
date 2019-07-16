@@ -12,8 +12,8 @@ from src.utils import Mentor, Polinomy, integration
 
 
 if __name__=="__main__":
-    steps = 2
-    time = 5
+    steps = 3
+    time = 10
     robot = Mentor()
     pos = np.zeros(3)
     angles = np.zeros(3)
@@ -67,10 +67,11 @@ if __name__=="__main__":
     matrix = np.matmul(matrix_G0, matrix_5G)
     positions = [matrix[0][3], matrix[1][3], matrix[2][3]]
     theta_f = robot.get_angles(positions, rot)
+    print(theta_f)
     pos, rot = robot.get_position(theta_f, 6)
     print(pos)
     #theta_i = [0, 0, 0, 0, 0]
 #   theta_f = [3.1415, 3.1415/6, 3.1415/6, 3.1415/2, 3.1415/2]
-    test = Population(14, 2, 0.7, 0.4, theta_i, theta_f, time, steps)
+    test = Population(200, 40, 300, 0.7, 0.04, theta_i, theta_f, time, steps)
     test.generation(theta_i, theta_f, time, steps)
         

@@ -61,14 +61,21 @@ class Node:
         self.dist = integration(np.array(points))
 
     def test_velocity(self, time):
-        ang_vel1, ang_vel2, ang_vel3, ang_vel4, ang_vel5 = [],[],[],[],[]
         for i in range(self.angle_1.shape[0]-1):
-            ang_vel1.append(abs(self.angle_1[i+1] - self.angle_1[i])/(time/500))
-            ang_vel2.append(abs(self.angle_2[i+1] - self.angle_2[i])/(time/500))
-            ang_vel3.append(abs(self.angle_3[i+1] - self.angle_3[i])/(time/500))
-            ang_vel4.append(abs(self.angle_4[i+1] - self.angle_4[i])/(time/500))
-            ang_vel5.append(abs(self.angle_5[i+1] - self.angle_5[i])/(time/500))
-        if max(ang_vel1) > 1 or max(ang_vel2) > 1 or max(ang_vel3) > 1 or max(ang_vel4) >1 or max(ang_vel5) > 1:
-            self.constraint = False
-        else:
-            self.constraint = False
+            if abs(self.angle_1[i+1] - self.angle_1[i])/(time/self.angle_1.shape[0]) > 6:
+                self.constraint = True
+                break
+            if abs(self.angle_2[i+1] - self.angle_2[i])/(time/self.angle_1.shape[0]) > 6:
+                self.constraint = True
+                break
+            if abs(self.angle_3[i+1] - self.angle_3[i])/(time/self.angle_1.shape[0]) > 6:
+                self.constraint = True
+                break
+            if abs(self.angle_4[i+1] - self.angle_4[i])/(time/self.angle_1.shape[0]) > 6:
+                self.constraint = True
+                break
+            if abs(self.angle_5[i+1] - self.angle_5[i])/(time/self.angle_1.shape[0]) > 6:
+                self.constraint = True
+                break
+
+        self.constraint = False
