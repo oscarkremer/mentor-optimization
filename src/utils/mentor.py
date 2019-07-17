@@ -66,6 +66,7 @@ class Mentor:
             return np.arccos(cos) + 3.14159265358979
         if sin <= 0 and cos <= 0:
             return 2*3.14159265358979 - np.arcsin(-sin)
+
     def fix_theta1(self, pos):
         theta1 = np.arctan(abs(pos[1])/abs(pos[0]))
         if pos[0] >= 0 and pos[1] >= 0:

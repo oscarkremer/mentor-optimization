@@ -72,6 +72,8 @@ if __name__=="__main__":
     print(pos)
     #theta_i = [0, 0, 0, 0, 0]
 #   theta_f = [3.1415, 3.1415/6, 3.1415/6, 3.1415/2, 3.1415/2]
-    test = Population(200, 40, 300, 0.7, 0.04, theta_i, theta_f, time, steps)
-    test.generation(theta_i, theta_f, time, steps)
+    optimized = Population(100, 30, 30, 0.7, 0.04, theta_i, theta_f, time, steps)
+    population = optimized.initialization(theta_i, theta_f, time, steps)
+
+    optimized.generation(population, theta_i, theta_f, time, steps)
         

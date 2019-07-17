@@ -4,7 +4,7 @@ import random
 def integration(points):
     dist = 0 
     for i in range(points.shape[0]-1):
-        dist+=np.sqrt(np.power(points[i][0] - points[i+1][0], 2)+np.power(points[i][1] - points[i+1][1], 2)+np.power(points[i][2] - points[i+1][2], 2))
+        dist+=np.sqrt((points[i][0] - points[i+1][0])**2 + (points[i][1] - points[i+1][1])**2 + (points[i][2] - points[i+1][2])**2)
     return dist
 
     

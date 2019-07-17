@@ -18,10 +18,8 @@ class Node:
         self.joint3 = [times[2], thetas[2], omegas[2]]
         self.joint4 = [times[3], thetas[3], omegas[3]]
         self.joint5 = [times[4], thetas[4], omegas[4]]
-        self.dist_calc(steps, theta_i, time)
 
-
-    def dist_calc(self, steps, theta_i, time):
+    def find_points(self, theta_i, time, steps):    
         mentor = Mentor()
         angles, points, polynomies = [], [], []
         for j in range(steps-1):
@@ -58,7 +56,7 @@ class Node:
             pos, rot = mentor.get_position(angle, 6)
             points.append(pos[0:3])
         self.points = points
-        self.dist = integration(np.array(points))
+
 
     def test_velocity(self, time):
         for i in range(self.angle_1.shape[0]-1):
