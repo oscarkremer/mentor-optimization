@@ -91,7 +91,7 @@ class Population:
             for member in population:
                 members.append(member)
           
-
+        
             if self.std < 0.00001:
                 mut_cycle = 1
             else:
@@ -112,7 +112,6 @@ class Population:
                     print(e)
                     pass
 
-            
             best_of_generation.append(self.selection(population, number_bests = 1)[0][0])
             print(best_of_generation)
             best_generation = self.selection(population, number_bests = 1)[0]
@@ -132,8 +131,8 @@ class Population:
             points_gen['x'] = x_gen
             points_gen['y'] = y_gen
             points_gen['z'] = z_gen
-            angles_gen.to_csv('data/angles_{}.csv'.format(i), index=False)
-            points_gen.to_csv('data/points_{}.csv'.format(i), index=False)
+          #  angles_gen.to_csv('data/angles_{}.csv'.format(i), index=False)
+          #  points_gen.to_csv('data/points_{}.csv'.format(i), index=False)
             
         
         dataframe['distance'] = actual_best
@@ -184,13 +183,11 @@ class Population:
     def selection(self, population, number_bests = 2):
         selected = (sorted(population, key = getitem))[0:number_bests]
         print(selected)
-        for member in selected:
-            print(_integration(np.array(member[1].points)))
         return selected
    
     def cross_over(self, parents, theta_i, theta_f, time, steps):
 
-    #    self.prob_adaptation(1/_integration(np.array(parents[0].points)))
+        self.prob_adaptation(1/_integration(np.array(parents[0].points)))
         prob_1 = random.random()
         prob_2 = random.random()
         prob_3 = random.random()
@@ -228,7 +225,7 @@ class Population:
         element.joint4 = member[1].joint4
         element.joint5 = member[1].joint5
 
-    #    self.prob_adaptation(1/dist)
+        self.prob_adaptation(1/dist)
         if prob_1 <= self.p_m:
             deltas, delta_thetas, delta_omegas = create_angles(theta_i[0], theta_f[0], time, steps)
             element.joint1 = [deltas, delta_thetas, delta_omegas]
