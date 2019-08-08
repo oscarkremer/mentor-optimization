@@ -169,7 +169,6 @@ class Population:
             self.p_m = 0.8
 
 
-
     def analysis(self, population):
         fitness = []
         for member in population:

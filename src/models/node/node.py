@@ -55,6 +55,7 @@ class Node:
             pos, rot = mentor.get_position(angle, 6)
             points.append(pos[0:3])
         self.points = points
+        self.constraint = False
         self.test_velocity(time)
 
 
@@ -76,10 +77,9 @@ class Node:
                 self.constraint = True
                 break
 
-        self.constraint = False
     
     def final_points(self):
-        if abs(self.points[-1][0] - 15) > 0.1 and abs(self.points[-1][1] - 15) > 0.1 and abs(self.points[-1][2]-20)>0.1:
+        if abs(self.points[-1][0] - 32) > 0.1 or abs(self.points[-1][1] - 0) > 0.1 or abs(self.points[-1][2] - 0) > 0.1:
             return True
         else:
             return False
