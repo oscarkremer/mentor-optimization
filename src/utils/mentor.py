@@ -6,14 +6,21 @@ class Mentor:
         self.a = [0, 0, 17.2739, 15.5, 0]
         self.d = [0, 0, 0, 0, 0]
         
-    def get_angles(self, pos, angles):
-        orientation = angles
+    def get_angles(self, pos, rot):
+        orientation = rot 
         theta = []
-        theta1 = np.arctan(pos[1]/pos[0])
-        theta3 = np.arccos((pos[0]**2 + pos[1]**2 + pos[2]**2 - self.a[2]**2 - self.a[3]**2)/(2*self.a[2]*self.a[3]))
+        theta1 = self.fix_theta1(pos)
+        theta1 = np.nan_to_num(theta1)
+        theta3 = self.fix_theta3((pos[0]**2 + pos[1]**2 + pos[2]**2 - self.a[2]**2 - self.a[3]**2)/(2*self.a[2]*self.a[3]))
+        
+        theta3 = np.nan_to_num(theta3)
         theta2 = -theta3 + np.arcsin(((-np.cos(theta3)*self.a[2] - self.a[3])*pos[2] + np.sin(theta3)*self.a[2]*(np.sin(theta1)*pos[1]+pos[0]*np.cos(theta1)))/(np.power(np.cos(theta1)*pos[0]+np.sin(theta1)*pos[1], 2)+ pos[2]*pos[2]))
-        theta4 = np.arcsin(np.sin(theta2+theta3)*orientation[2][2] - np.cos(theta1)*np.cos(theta2+theta3)*orientation[0][2] - np.sin(theta1)*np.cos(theta2+theta3)*orientation[1][2])
-        theta5 = np.arcsin(np.sin(theta1)*orientation[0][0] - np.cos(theta1)*orientation[1][0])
+        sin_theta4 = np.sin(theta2+theta3)*orientation[2][2] - np.cos(theta1)*np.cos(theta2+theta3)*orientation[0][2] - np.sin(theta1)*np.cos(theta2+theta3)*orientation[1][2]
+        cos_theta4 = -np.cos(theta2+theta3)*orientation[2][2] - np.cos(theta1)*np.sin(theta2+theta3)*orientation[0][2] - np.sin(theta1)*np.sin(theta2+theta3)*orientation[1][2]
+        theta4 = self.fix_quadrante(sin_theta4, cos_theta4)
+        sin_theta5 = np.sin(theta1)*orientation[0][0] - np.cos(theta1)*orientation[1][0]
+        cos_theta5 = np.sin(theta1)*orientation[0][1] - np.cos(theta1)*orientation[1][1]
+        theta5  = self.fix_quadrante(sin_theta5, cos_theta5)
         theta.append(theta1)
         theta.append(theta2)
         theta.append(theta3)
@@ -22,14 +29,18 @@ class Mentor:
         return theta
 
     def get_position(self, theta, z_axis):
-        matrix = np.identity(4)
-        for i in range(5):
-            matrix = np.matmul(matrix, self.denavit(theta, i))
+        matrix = np.matmul(self.denavit(theta, 3),self.denavit(theta, 4))
+
+        matrix = np.matmul(self.denavit(theta, 2), matrix)
+
+        matrix = np.matmul(self.denavit(theta, 1), matrix)
+
+        matrix = np.matmul(self.denavit(theta, 0), matrix)
         return self.separate(matrix, z_axis)
     
     def get_orientation(self, alpha, beta, gamma):
         orientation = [[np.cos(alpha)*np.cos(beta), np.cos(alpha)*np.sin(beta)*np.sin(gamma) - np.sin(alpha)*np.cos(gamma), np.cos(alpha)*np.sin(beta)*np.cos(gamma) + np.sin(alpha)*np.sin(gamma) ],
-                        [np.sin(alpha)*np.cos(beta), np.sin(alpha)*np.sin(beta)*np.sin(gamma) + np.sin(alpha)*np.cos(gamma), np.sin(alpha)*np.sin(beta)*np.cos(gamma) + np.cos(alpha)*np.sin(gamma) ],
+                        [np.sin(alpha)*np.cos(beta), np.sin(alpha)*np.sin(beta)*np.sin(gamma) + np.cos(alpha)*np.cos(gamma), np.sin(alpha)*np.sin(beta)*np.cos(gamma) - np.cos(alpha)*np.sin(gamma) ],
                         [-np.sin(beta), -np.cos(beta)*np.sin(gamma), np.cos(beta)*np.cos(gamma)]]
         return orientation
 
@@ -46,3 +57,26 @@ class Mentor:
             [np.sin(theta[i])*np.sin(self.alpha[i]), np.cos(theta[i])*np.sin(self.alpha[i]), np.cos(self.alpha[i]), np.cos(self.alpha[i])*self.d[i]],
             [0, 0, 0, 1]]
 
+    def fix_quadrante(self, sin, cos):
+        if sin >= 0 and cos >= 0:
+            return np.arcsin(sin)
+        if sin >= 0  and cos <= 0:
+            return 3.14159265358979 - np.arcsin(sin)
+        if sin <= 0 and cos >= 0:
+            return np.arccos(cos) + 3.14159265358979
+        if sin <= 0 and cos <= 0:
+            return 2*3.14159265358979 - np.arcsin(-sin)
+
+    def fix_theta1(self, pos):
+        theta1 = np.arctan(abs(pos[1])/abs(pos[0]))
+        if pos[0] >= 0 and pos[1] >= 0:
+            return theta1
+        if pos[0] <= 0 and pos[1] >= 0:
+            return 3.1415926535 - theta1
+        if pos[0] <= 0 and pos[1] <= 0:
+            return 3.14159265358979 + theta1
+        if pos[0] >= 0 and pos[1] <= 0:
+            return 2*3.14159265358979 - theta1
+
+    def fix_theta3(self, cos):
+        return np.arccos(cos)       
