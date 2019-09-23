@@ -79,7 +79,7 @@ class Node:
 
     
     def final_points(self):
-        if abs(self.points[-1][0] - 32) > 0.1 or abs(self.points[-1][1] - 0) > 0.1 or abs(self.points[-1][2] - 0) > 0.1:
+        if abs(self.points[-1][0] - 10) > 0.1 or abs(self.points[-1][1] + 10) > 0.1 or abs(self.points[-1][2] - 10) > 0.1:
             return True
         else:
             return False
