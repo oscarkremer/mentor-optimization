@@ -30,11 +30,6 @@ kinematics:
 	@$(PYTHON_INTERPRETER) src/api/kinematics.py 
 
 
-inverse_kinematics:
-	@echo "---> Running Inverse Kinematics"
-	@$(PYTHON_INTERPRETER) src/api/inverse_kinematics.py 
-
-
 train:
 	@echo "---> Running Genetic Algorithms to Optimize Trajectory Planning"
 	@$(PYTHON_INTERPRETER) src/api/train.py 

@@ -1,7 +1,7 @@
 import numpy as np
 
-
 class Polinomy:
+
     def __init__(self, t_i, t_f, theta_i, theta_f, omega_i, omega_f, number=10000):
         self.steps = number
         self.t_i = t_i
@@ -10,7 +10,7 @@ class Polinomy:
         self.theta_f = theta_f
         self.omega_i = omega_i
         self.omega_f = omega_f
-        self.generate_points(number=number)
+        self.generate_points(number)
 
     def generate_coeff(self):
         times = [[1, self.t_i, np.power(self.t_i, 2), np.power(self.t_i, 3)],

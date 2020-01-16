@@ -1,5 +1,5 @@
-import numpy as np
 import random
+import numpy as np
 
 def integration(points):
     dist = 0 
@@ -7,12 +7,8 @@ def integration(points):
         dist+=np.sqrt((points[i][0] - points[i+1][0])**2 + (points[i][1] - points[i+1][1])**2 + (points[i][2] - points[i+1][2])**2)
     return dist
 
-    
 def create_angles(theta_i, theta_f, final_time, steps):
-    theta, omega, time = [], [], []
-    theta.append(theta_i)
-    omega.append(0)
-    time.append(0)
+    theta, omega, time = [theta_i], [0], [0]
     for i in range(steps-2):
         theta.append((theta_f - theta_i)*random.random() + theta_i)
         omega.append(5*random.random())
@@ -26,3 +22,6 @@ def create_angles(theta_i, theta_f, final_time, steps):
     else:
         theta.sort(reverse=True)
     return time, theta, omega
+
+
+        
