@@ -8,10 +8,20 @@ class Mentor:
         
     def get_angles(self, pos, rot):
         orientation = rot 
+        theta = self._inverse_kinematics(pos, orientation)
+        returned_pos, returned_rot = self.get_position(theta)        
+        angle3_tag = self.verify(pos, returned_pos)
+        if angle3_tag:
+            return theta
+        else:
+            theta = self._inverse_kinematics(pos, orientation, tag=angle3_tag)
+            return theta
+
+    def _inverse_kinematics(self, pos, orientation, tag=True):
         theta = []
         theta1 = np.nan_to_num(self.fix_theta1(pos))
         theta.append(theta1)
-        theta3 = self.fix_theta3((pos[0]**2+pos[1]**2+pos[2]**2-self.a[2]**2-self.a[3]**2)/(2*self.a[2]*self.a[3]))
+        theta3 = self.fix_theta3((pos[0]**2+pos[1]**2+pos[2]**2-self.a[2]**2-self.a[3]**2)/(2*self.a[2]*self.a[3]), angle3_tag)
         theta3 = np.nan_to_num(theta3)
         theta2 = -theta3+np.arcsin(((-np.cos(theta3)*self.a[2]-self.a[3])*pos[2]+np.sin(theta3)*self.a[2]*(np.sin(theta1)*pos[1]+pos[0]*np.cos(theta1)))/(np.power(np.cos(theta1)*pos[0]+np.sin(theta1)*pos[1], 2)+pos[2]*pos[2]))
         theta.append(theta2)
@@ -22,26 +32,7 @@ class Mentor:
         sin_theta5 = np.sin(theta1)*orientation[0][0] - np.cos(theta1)*orientation[1][0]
         cos_theta5 = np.sin(theta1)*orientation[0][1] - np.cos(theta1)*orientation[1][1]
         theta.append(self.fix_quadrante(sin_theta5, cos_theta5))
-        returned_pos, returned_rot = self.get_position(theta)        
-        angle3_tag = self.verify(pos, returned_pos)
-        if angle3_tag:
-            return theta
-        else:
-            theta = []
-            theta1 = np.nan_to_num(self.fix_theta1(pos))
-            theta.append(theta1)
-            theta3 = self.fix_theta3((pos[0]**2+pos[1]**2+pos[2]**2-self.a[2]**2-self.a[3]**2)/(2*self.a[2]*self.a[3]), angle3_tag)
-            theta3 = np.nan_to_num(theta3)
-            theta.append(theta3)
-            theta2 = -theta3+np.arcsin(((-np.cos(theta3)*self.a[2]-self.a[3])*pos[2]+np.sin(theta3)*self.a[2]*(np.sin(theta1)*pos[1]+pos[0]*np.cos(theta1)))/(np.power(np.cos(theta1)*pos[0]+np.sin(theta1)*pos[1], 2)+pos[2]*pos[2]))
-            theta.append(theta2)
-            sin_theta4 = np.sin(theta2+theta3)*orientation[2][2] - np.cos(theta1)*np.cos(theta2+theta3)*orientation[0][2] - np.sin(theta1)*np.cos(theta2+theta3)*orientation[1][2]
-            cos_theta4 = -np.cos(theta2+theta3)*orientation[2][2] - np.cos(theta1)*np.sin(theta2+theta3)*orientation[0][2] - np.sin(theta1)*np.sin(theta2+theta3)*orientation[1][2]
-            theta.append(self.fix_quadrante(sin_theta4, cos_theta4))
-            sin_theta5 = np.sin(theta1)*orientation[0][0] - np.cos(theta1)*orientation[1][0]
-            cos_theta5 = np.sin(theta1)*orientation[0][1] - np.cos(theta1)*orientation[1][1]
-            theta.append(self.fix_quadrante(sin_theta5, cos_theta5))
-            return theta
+        return theta
 
     def verify(self, pos, returned_pos):
         diff = pos-returned_pos
