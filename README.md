@@ -1,10 +1,38 @@
-mentor
+# Genetic Algorithms for Trajectory Optimization - Machine Learning Toolbox
+
+Here we submitted all code snippets to help with machine learning coding to deal with an optimization problem, where the trajectory planning of a didactic robot is tackled.
+
+## Golden Rule
+
+#### THOU SHALT NEVER USE YOUR TESTING DATA FOR TRAINING
+
+## Setup your base-repo
+
+`$ git remote add base git@github.com:oscarkremer/mentor.git`
+
+To update and get latest features
+
+`$ git pull --rebase base master`
+
+## Install
+
+```bash
+$ make
+$ make install
+```
+
+See: `Makefile` to know other commands.
+
+## Machine Learning Project
+
 ==============================
 
 Pipeline to generate trajectories for robot mentor using artificial intelligence algorithms
 
-Project Organization
-------------
+## Project Organization
+
+==============================
+
 
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`

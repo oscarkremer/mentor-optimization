@@ -6,7 +6,10 @@ from src.utils.numerical import integration, create_angles
 
 
 class Node:
-    def __init__(self, theta_i, theta_f, time, steps):
+    def __init__(self, theta_i, theta_f, time, steps, final_point):
+        self.x = final_point[0]
+        self.y = final_point[1]
+        self.z = final_point[2]
         times, thetas, omegas = [], [], []
         for i in range(5):
             deltas, delta_thetas, delta_omegas = create_angles(theta_i[i], theta_f[i], time, steps)
@@ -57,7 +60,7 @@ class Node:
 
     def test_velocity(self, time):
         for i in range(self.angle_1.shape[0]-1):
-            if abs(self.angle_1[i+1] - self.angle_1[i])/(time/self.angle_1.shape[0]) > 6 or self.final_points():
+            if abs(self.angle_1[i+1]-self.angle_1[i])/(time/self.angle_1.shape[0])> 6 or self.final_points():
                 self.constraint = True
             if abs(self.angle_2[i+1] - self.angle_2[i])/(time/self.angle_1.shape[0]) > 6 or self.final_points():
                 self.constraint = True
@@ -69,7 +72,8 @@ class Node:
                 self.constraint = True
 
     def final_points(self):
-        if abs(self.points[-1][0] - 10) > 0.1 or abs(self.points[-1][1] + 10) > 0.1 or abs(self.points[-1][2] - 10) > 0.1:
+        tol=0.01
+        if abs(self.points[-1][0]-self.x)>tol or abs(self.points[-1][1]-self.y) > tol or abs(self.points[-1][2]-self.z) > tol:
             return True
         else:
             return False

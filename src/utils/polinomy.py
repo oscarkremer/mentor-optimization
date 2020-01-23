@@ -25,7 +25,7 @@ class Polinomy:
         self.a_3 = coef[3][0]
       
     def generate_points(self, number):
-        points = np.linspace(self.t_i, self.t_f, number)
+        points = np.linspace(self.t_i, self.t_f, int(number))
         self.generate_coeff()
         self.thetas = self.a_0 + self.a_1*(np.power(points, 1)) + self.a_2*np.power(points, 2) + self.a_3*np.power(points,3) 
         self.delta_thetas = self.a_1 + 2*self.a_2*np.power(points,1) + 3*self.a_3*np.power(points, 2)
