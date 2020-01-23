@@ -29,10 +29,20 @@ kinematics:
 	@echo "---> Running Kinematics-Algorithms"
 	@$(PYTHON_INTERPRETER) src/api/kinematics.py 
 
-
 train:
 	@echo "---> Running Genetic Algorithms to Optimize Trajectory Planning"
 	@$(PYTHON_INTERPRETER) src/api/train.py 
+
+help:
+	@echo "--- List of Commands ---"
+	@echo "--- install: Start installation of environment"
+	@echo "--- setup: Check environment and setup variables"
+	@echo "--- dirs: Create directory to save plots and .csv"
+	@echo "--- help: See list of possible commands"
+	@echo "--- kinematics: Run kinematics calculations for Mentor Robot"
+	@echo "--- train: Start running genetic algorithm for trajectory optimization"
+	@echo "--- clean: Remove unecessary files"
+	@echo "--- dirs: Create directory to save plots and .csv"
 
 clean:
 	find . -type f -name "*.py[co]" -delete
