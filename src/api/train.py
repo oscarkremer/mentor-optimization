@@ -12,7 +12,7 @@ def calculate_thetas(pos, angles):
     [0, 0, 0, 1]]
     matrix_5G = [[1, 0, 0, 0],
     [0, 1, 0, 0],
-    [0, 0, 1, -6],
+    [0, 0, 1, 0],
     [0, 0, 0, 1]]
     matrix = np.matmul(matrix_G0, matrix_5G)
     positions = [matrix[0][3], matrix[1][3], matrix[2][3]]
