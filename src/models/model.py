@@ -28,9 +28,6 @@ class Population:
         return population
     
     def generation(self, population,  theta_i, theta_f, time, steps):
-        dataframe = pd.DataFrame()
-        angles = pd.DataFrame()
-        points = pd.DataFrame()
         best_of_generation = []
         for i in range(self.generations):
             population = self.selection(population, number_bests = self.size)
@@ -62,8 +59,15 @@ class Population:
                 except Exception as e:
                     pass
             best_of_generation.append(self.selection(population, number_bests = 1)[0][0])
-            print(best_of_generation)
             best_generation = self.selection(population, number_bests = 1)[0]
+        best_of_all = self.selection(population, number_bests = 1)[0]
+        self.save_csv(population, actual_best, best_of_all)
+
+
+    def save_csv(self, population, actual_best, best_of_all):
+        dataframe = pd.DataFrame()
+        angles = pd.DataFrame()
+        points = pd.DataFrame()
         dataframe['distance'] = actual_best
         best_of_all = self.selection(population, number_bests = 1)[0]
         angles['theta1'] = best_of_all[1].angle_1
@@ -79,9 +83,10 @@ class Population:
         points['x'] = x
         points['y'] = y
         points['z'] = z
-        angles.to_csv('data/angles.csv', index=False)
-        points.to_csv('data/points.csv', index=False)
-        dataframe.to_csv('data/results.csv', index=False)
+        angles.to_csv('data/processed/angles.csv', index=False)
+        points.to_csv('data/processed/points.csv', index=False)
+        dataframe.to_csv('data/processed/results.csv', index=False)
+
 
     def prob_adaptation(self, fitness):
         if fitness > self.average and (self.maximum-self.average) > 0.00001:

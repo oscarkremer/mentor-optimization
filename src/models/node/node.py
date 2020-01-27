@@ -52,7 +52,7 @@ class Node:
         self.angle_5 = angle_5[0:index]
         angles = np.transpose([angle_1[0:index], angle_2[0:index], angle_3[0:index], angle_4[0:index], angle_5[0:index]])
         for angle in angles:
-            pos, rot = mentor.get_position(angle, 6)
+            pos, rot = mentor.get_position(angle, 0)
             points.append(pos[0:3])
         self.points = points
         self.constraint = False
@@ -60,7 +60,7 @@ class Node:
 
     def test_velocity(self, time):
         for i in range(self.angle_1.shape[0]-1):
-            if abs(self.angle_1[i+1]-self.angle_1[i])/(time/self.angle_1.shape[0])> 6 or self.final_points():
+            if abs(self.angle_1[i+1]-self.angle_1[i])/(time/self.angle_1.shape[0]) > 6 or self.final_points():
                 self.constraint = True
             if abs(self.angle_2[i+1] - self.angle_2[i])/(time/self.angle_1.shape[0]) > 6 or self.final_points():
                 self.constraint = True
@@ -73,7 +73,7 @@ class Node:
 
     def final_points(self):
         tol=0.01
-        if abs(self.points[-1][0]-self.x)>tol or abs(self.points[-1][1]-self.y) > tol or abs(self.points[-1][2]-self.z) > tol:
+        if abs(self.points[-1][0]-self.x)>tol or abs(self.points[-1][1]-self.y)>tol or abs(self.points[-1][2]-self.z)>tol:
             return True
         else:
             return False
