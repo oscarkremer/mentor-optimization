@@ -19,7 +19,7 @@ def calculate_thetas(pos, angles):
     theta = robot.get_angles(positions, rot)
     return theta
 
-if __name__=="__main__":
+if __name__ == "__main__":
     steps = 3
     time = 10
     robot = Mentor()
