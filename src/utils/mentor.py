@@ -10,31 +10,56 @@ class Mentor:
         orientation = rot 
         theta = self._inverse_kinematics(pos, orientation)
         returned_pos, returned_rot = self.get_position(theta)        
-        tag = self.verify(pos, returned_pos)
+        tag = self.verify(pos, rot, returned_pos, returned_rot)
         if tag:
             return theta
         else:
-            theta = self._inverse_kinematics(pos, orientation, tag_theta2=True, tag_theta3=False)
+            theta = self._inverse_kinematics(pos, orientation, tag_theta1=False, tag_theta2=True, tag_theta3=True)
             returned_pos, returned_rot = self.get_position(theta)        
-            tag = self.verify(pos, returned_pos)
+            tag = self.verify(pos, rot, returned_pos, returned_rot)
             if tag:
                 return theta
             else:
-                theta = self._inverse_kinematics(pos, orientation, tag_theta2=False, tag_theta3=True)
+                theta = self._inverse_kinematics(pos, orientation, tag_theta1=False, tag_theta2=True, tag_theta3=False)
                 returned_pos, returned_rot = self.get_position(theta)        
-                tag = self.verify(pos, returned_pos)
-                if tag:       
+                tag = self.verify(pos, rot, returned_pos, returned_rot)
+                if tag:
                     return theta
                 else:
-                    theta = self._inverse_kinematics(pos, orientation, tag_theta2=False, tag_theta3=False)
+                    theta = self._inverse_kinematics(pos, orientation, tag_theta1=False, tag_theta2=False, tag_theta3=True)
                     returned_pos, returned_rot = self.get_position(theta)        
-                    tag = self.verify(pos, returned_pos)
-                    return theta 
-                    
+                    tag = self.verify(pos, rot, returned_pos, returned_rot)
+                    if tag:       
+                        return theta
+                    else:
+                        theta = self._inverse_kinematics(pos, orientation, tag_theta1=False, tag_theta2=False, tag_theta3=False)
+                        returned_pos, returned_rot = self.get_position(theta)        
+            
+                        tag = self.verify(pos, rot, returned_pos, returned_rot)
+                        if tag:
+                            return theta 
+                        else:
+                            theta = self._inverse_kinematics(pos, orientation, tag_theta1=True, tag_theta2=True, tag_theta3=False)
+                            returned_pos, returned_rot = self.get_position(theta)        
+                            tag = self.verify(pos, rot, returned_pos, returned_rot)
+                            if tag:
+                                return theta
+                            else:
+                                theta = self._inverse_kinematics(pos, orientation, tag_theta1=True, tag_theta2=False, tag_theta3=True)
+                                returned_pos, returned_rot = self.get_position(theta)        
+                                tag = self.verify(pos, rot, returned_pos, returned_rot)
+                                if tag:       
+                                    return theta
+                                else:
+                                    theta = self._inverse_kinematics(pos, orientation, tag_theta1=True, tag_theta2=False, tag_theta3=False)
+                                    returned_pos, returned_rot = self.get_position(theta)        
+                                    tag = self.verify(pos, rot, returned_pos, returned_rot)
+                                    return theta 
+
                        
-    def _inverse_kinematics(self, pos, orientation, tag_theta2=True, tag_theta3=True):
+    def _inverse_kinematics(self, pos, orientation, tag_theta1=True, tag_theta2=True, tag_theta3=True):
         theta = []
-        theta1 = np.nan_to_num(self.fix_theta1(pos))
+        theta1 = np.nan_to_num(self.fix_theta1(pos, tag_theta1))
         theta.append(theta1)
         theta3 = self.fix_theta3((pos[0]**2+pos[1]**2+pos[2]**2-self.a[2]**2-self.a[3]**2)/(2*self.a[2]*self.a[3]), tag_theta3)
         theta3 = np.nan_to_num(theta3)
@@ -49,9 +74,10 @@ class Mentor:
         theta.append(self.fix_quadrante(sin_theta5, cos_theta5))
         return theta
 
-    def verify(self, pos, returned_pos):
+    def verify(self, pos, rot, returned_pos, returned_rot):
         diff = pos[:3]-returned_pos[:3]
-        if abs(diff[0])>0.001 or abs(diff[1]>0.001) or abs(diff[2]>0.001):
+        rot_norm = np.linalg.norm(rot-returned_rot)
+        if rot_norm > 0.001 or abs(diff[0])>0.001 or abs(diff[1]>0.001) or abs(diff[2]>0.001):
             return False
         else:
             return True
@@ -69,6 +95,7 @@ class Mentor:
 
     def separate(self, matrix, z_axis):
         pos =  np.matmul(matrix, [0,0,z_axis,1])
+        print(pos)
         rot = []
         for i in range(3):
             rot.append(matrix[i][:-1])
@@ -90,34 +117,34 @@ class Mentor:
         if sin <= 0 and cos <= 0:
             return np.arccos(abs(cos)) + np.pi
 
-    def fix_theta1(self, pos):
-        theta = np.arctan(abs(pos[1])/abs(pos[0]))
-        if pos[0] >= 0 and pos[1] >= 0:
+    def fix_theta1(self, pos, tag):
+        theta = np.arctan(pos[1]/pos[0])
+        if tag and theta > 0:
             return theta
-        if pos[0] <= 0 and pos[1] >= 0:
-            return np.pi - theta
-        if pos[0] <= 0 and pos[1] <= 0:
+        if not tag and theta > 0:
             return np.pi + theta
-        if pos[0] >= 0 and pos[1] <= 0:
-            return np.pi - theta
+        if tag and theta < 0:
+            return 2*np.pi - abs(theta)
+        if not tag and theta < 0:
+            return np.pi - abs(theta)
 
-    def fix_theta2(self, sin, tag=True):
+    def fix_theta2(self, sin, tag):
         if tag and sin>=0:
-            return np.arcsin(sin)       
+            return np.arcsin(abs(sin))       
         if not tag and sin>=0:
-            return np.pi-np.arcsin(sin)       
+            return np.pi-np.arcsin(abs(sin))       
         if tag and sin<=0:
-            return np.arcsin(sin)       
+            return 2*np.pi - np.arcsin(abs(sin))       
         if not tag and sin<=0:
             return np.pi + np.arcsin(abs(sin))       
 
-        else:
-            return 2*np.pi - np.arccos(cos)    
-
-    def fix_theta3(self, cos, tag=True):
-        if tag:
-            return np.arccos(cos)       
-        else:
-            return 2*np.pi - np.arccos(cos)    
-            
+    def fix_theta3(self, cos, tag):
+        if tag and cos>=0:
+            return np.arccos(abs(cos))       
+        if not tag and cos>=0:
+            return 2*np.pi-np.arccos(abs(cos))       
+        if tag and cos<=0:
+            return np.pi-np.arccos(abs(cos))       
+        if not tag and cos<=0:
+            return np.pi + np.arccos(abs(cos))                   
 
