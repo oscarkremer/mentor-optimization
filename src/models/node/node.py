@@ -52,7 +52,7 @@ class Node:
         self.angle_5 = angle_5[0:index]
         angles = np.transpose([angle_1[0:index], angle_2[0:index], angle_3[0:index], angle_4[0:index], angle_5[0:index]])
         for angle in angles:
-            pos, rot = mentor.get_position(angle, 0)
+            pos, rot = mentor.get_position(angle, z_axis=5)
             points.append(pos[0:3])
         self.points = points
         self.constraint = False
