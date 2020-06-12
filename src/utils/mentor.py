@@ -12,50 +12,51 @@ class Mentor:
         returned_pos, returned_rot = self.get_position(theta)        
         tag = self.verify(pos, rot, returned_pos, returned_rot)
         if tag:
-            return theta
+            return False, theta
         else:
             theta = self._inverse_kinematics(pos, orientation, tag_theta1=False, tag_theta2=True, tag_theta3=True)
             returned_pos, returned_rot = self.get_position(theta)        
             tag = self.verify(pos, rot, returned_pos, returned_rot)
             if tag:
-                return theta
+                return False, theta
             else:
                 theta = self._inverse_kinematics(pos, orientation, tag_theta1=False, tag_theta2=True, tag_theta3=False)
                 returned_pos, returned_rot = self.get_position(theta)        
                 tag = self.verify(pos, rot, returned_pos, returned_rot)
                 if tag:
-                    return theta
+                    return False, theta
                 else:
                     theta = self._inverse_kinematics(pos, orientation, tag_theta1=False, tag_theta2=False, tag_theta3=True)
                     returned_pos, returned_rot = self.get_position(theta)        
                     tag = self.verify(pos, rot, returned_pos, returned_rot)
                     if tag:       
-                        return theta
+                        return False, theta
                     else:
                         theta = self._inverse_kinematics(pos, orientation, tag_theta1=False, tag_theta2=False, tag_theta3=False)
-                        returned_pos, returned_rot = self.get_position(theta)        
-            
+                        returned_pos, returned_rot = self.get_position(theta)       
                         tag = self.verify(pos, rot, returned_pos, returned_rot)
                         if tag:
-                            return theta 
+                            return False, theta 
                         else:
                             theta = self._inverse_kinematics(pos, orientation, tag_theta1=True, tag_theta2=True, tag_theta3=False)
                             returned_pos, returned_rot = self.get_position(theta)        
                             tag = self.verify(pos, rot, returned_pos, returned_rot)
                             if tag:
-                                return theta
+                                return False, theta
                             else:
                                 theta = self._inverse_kinematics(pos, orientation, tag_theta1=True, tag_theta2=False, tag_theta3=True)
                                 returned_pos, returned_rot = self.get_position(theta)        
                                 tag = self.verify(pos, rot, returned_pos, returned_rot)
                                 if tag:       
-                                    return theta
+                                    return False, theta
                                 else:
                                     theta = self._inverse_kinematics(pos, orientation, tag_theta1=True, tag_theta2=False, tag_theta3=False)
                                     returned_pos, returned_rot = self.get_position(theta)        
                                     tag = self.verify(pos, rot, returned_pos, returned_rot)
-                                    return theta 
-
+                                    if tag:
+                                        return False, theta 
+                                    else:
+                                        return True, theta
                        
     def _inverse_kinematics(self, pos, orientation, tag_theta1=True, tag_theta2=True, tag_theta3=True):
         theta = []
@@ -118,8 +119,8 @@ class Mentor:
             return np.arccos(abs(cos)) + np.pi
 
     def fix_theta1(self, pos, tag):
-        theta = np.arctan(pos[1]/pos[0])
-        if tag and theta > 0:
+        theta = np.arctan(np.array([pos[1]]), np.array([pos[0]]))[0]
+        if tag and theta >= 0:
             return theta
         if not tag and theta > 0:
             return np.pi + theta

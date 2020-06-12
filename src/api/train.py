@@ -16,17 +16,23 @@ def calculate_thetas(pos, angles):
     [0, 0, 0, 1]]
     matrix = np.matmul(matrix_G0, matrix_5G)
     positions = [matrix[0][3], matrix[1][3], matrix[2][3]]
-    theta = robot.get_angles(positions, rot)
+    error, theta = robot.get_angles(positions, rot)
+    return error, theta
+
+def enter_position():
+    error = True
+    while error:
+        pos, angles = input_cartesian()    
+        error, theta = calculate_thetas(pos, angles)
+        if error:
+            print('Error - Impossible position and/or orientation, please enter other values')
     return theta
 
 if __name__ == "__main__":
     steps = 3
     time = 10
-    robot = Mentor()
-    pos, angles = input_cartesian()    
-    theta_i = calculate_thetas(pos, angles)
-    pos, angles = input_cartesian()
-    theta_f = calculate_thetas(pos, angles)    
+    theta_i = enter_position()
+    theta_f = enter_position()
     optimized = Population(10, 1, 5, 0.7, 0.04, theta_i, theta_f, time, steps, pos)
     population = optimized.initialization(theta_i, theta_f, time, steps)
     optimized.generation(population, theta_i, theta_f, time, steps)
