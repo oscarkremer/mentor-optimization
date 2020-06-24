@@ -96,7 +96,6 @@ class Mentor:
 
     def separate(self, matrix, z_axis):
         pos =  np.matmul(matrix, [0,0,z_axis,1])
-        print(pos)
         rot = []
         for i in range(3):
             rot.append(matrix[i][:-1])

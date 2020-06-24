@@ -26,14 +26,14 @@ def enter_position():
         error, theta = calculate_thetas(pos, angles)
         if error:
             print('Error - Impossible position and/or orientation, please enter other values')
-    return theta
+    return theta, pos
 
 if __name__ == "__main__":
     steps = 3
     time = 10
-    theta_i = enter_position()
-    theta_f = enter_position()
-    optimized = Population(10, 1, 5, 0.7, 0.04, theta_i, theta_f, time, steps, pos)
+    theta_i, pos_i = enter_position()
+    theta_f, pos_f = enter_position()
+    optimized = Population(30, 10, 30, 0.7, 0.3, theta_i, theta_f, time, steps, pos_f)
     population = optimized.initialization(theta_i, theta_f, time, steps)
     optimized.generation(population, theta_i, theta_f, time, steps)
        
