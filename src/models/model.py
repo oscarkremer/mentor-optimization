@@ -29,11 +29,12 @@ class Population:
     
     def generation(self, population,  theta_i, theta_f, time, steps):
         best_of_generation = []
+        actual_best = []
         for i in range(self.generations):
             population = self.selection(population, number_bests = self.size)
-            actual_best = self.selection(population, number_bests = 1)[0][0]
+            actual_best.append(self.selection(population, number_bests = 1)[0][0])
             self.analysis(population)
-            print('Start Cross Over - {} '.format(i))
+            print('\r Start Cross Over - {} '.format(i+1), end='')
             members = []
             for member in population:
                 members.append(member[1])
@@ -48,7 +49,7 @@ class Population:
                 except Exception as e:
                     pass
             self.analysis(population)
-            print('Start mutation - {} '.format(i))
+            print('\r Start mutation - {} '.format(i+1), end='')
             for member in members:
                 try:
                     mutation = self.mutation(member, theta_i, theta_f, time, steps)
@@ -86,7 +87,6 @@ class Population:
         angles.to_csv('data/processed/angles.csv', index=False)
         points.to_csv('data/processed/points.csv', index=False)
         dataframe.to_csv('data/processed/results.csv', index=False)
-
 
     def prob_adaptation(self, fitness):
         if fitness > self.average and (self.maximum-self.average) > 0.00001:
