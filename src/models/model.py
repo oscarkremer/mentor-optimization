@@ -66,16 +66,9 @@ class Population:
 
 
     def save_csv(self, population, actual_best, best_of_all):
-        dataframe = pd.DataFrame()
-        angles = pd.DataFrame()
-        points = pd.DataFrame()
+        dataframe, points = pd.DataFrame(), pd.DataFrame()
         dataframe['distance'] = actual_best
         best_of_all = self.selection(population, number_bests = 1)[0]
-        angles['theta1'] = best_of_all[1].angle_1
-        angles['theta2'] = best_of_all[1].angle_2
-        angles['theta3'] = best_of_all[1].angle_3
-        angles['theta4'] = best_of_all[1].angle_4
-        angles['theta5'] = best_of_all[1].angle_5
         x, y, z = [], [], []
         for point in best_of_all[1].points:
             x.append(point[0])
@@ -84,7 +77,11 @@ class Population:
         points['x'] = x
         points['y'] = y
         points['z'] = z
-        angles.to_csv('data/processed/angles.csv', index=False)
+        points['theta1'] = best_of_all[1].angle_1
+        points['theta2'] = best_of_all[1].angle_2
+        points['theta3'] = best_of_all[1].angle_3
+        points['theta4'] = best_of_all[1].angle_4
+        points['theta5'] = best_of_all[1].angle_5
         points.to_csv('data/processed/points.csv', index=False)
         dataframe.to_csv('data/processed/results.csv', index=False)
 
