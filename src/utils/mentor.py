@@ -118,12 +118,15 @@ class Mentor:
             return np.arccos(abs(cos)) + np.pi
 
     def fix_theta1(self, pos, tag):
-        theta = np.arctan(np.array([pos[1]]), np.array([pos[0]]))[0]
+        if abs(pos[0]) < 0.001:  
+            theta = np.pi/2
+        else:
+            theta = np.arctan(pos[1]/ pos[0])
         if tag and theta >= 0:
             return theta
-        if not tag and theta > 0:
+        if not tag and theta >= 0:
             return np.pi + theta
-        if tag and theta < 0:
+        if tag and theta <= 0:
             return 2*np.pi - abs(theta)
         if not tag and theta < 0:
             return np.pi - abs(theta)
