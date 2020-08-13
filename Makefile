@@ -13,8 +13,8 @@ setup: check_environment
 	@echo "---> To complete setup please run \n---> source activate $(PROJECT_NAME)"
 
 install:
-	@echo "---> Installing dependencies.."
-	@conda env update -q -f environment.yml --name $(PROJECT_NAME) > /dev/null
+	@echo "---> Installing dependencies"
+	@conda env update -f environment.yml
 
 dirs:
 	@echo "---> Creating data dirs"

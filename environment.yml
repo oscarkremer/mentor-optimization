@@ -1,3 +1,4 @@
+name: mentor
 channels:
   - conda-forge
   - defaults
@@ -15,7 +16,9 @@ dependencies:
     - statsmodels
     - pytest
     - pandas
+    - scipy
+    - seaborn
+    - matplotlib
     - setuptools
     - wheel
     - -e .
-
