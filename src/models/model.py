@@ -3,7 +3,7 @@ import random
 import numpy as np
 import pandas as pd
 from .node.node import Node
-from src.utils.numerical import create_angles, integration
+from src.utils.numerical import create_angles
 
 class Population:
     def __init__(self, initial, size, generations, p_c, p_m, theta_i, theta_f, time, steps, points):
@@ -23,7 +23,7 @@ class Population:
             element.find_points(theta_i, time, steps)
             if not element.constraint:
                 i+=1
-                metric = integration(np.array(element.points))
+                metric = element.dist
                 population.append([metric, element])
         return population
     
@@ -35,16 +35,14 @@ class Population:
             actual_best.append(self.selection(population, number_bests = 1)[0][0])
             self.analysis(population)
             print('\r Start Cross Over - {} '.format(i+1), end='')
-            members = []
-            for member in population:
-                members.append(member[1])
+            members = [member[1] for member in population]
             combinations = list(itertools.product(members, repeat=2))
             for combination in combinations:
                 try:
                     new_element = self.cross_over(combination, theta_i, theta_f, time, steps)
                     new_element.find_points(theta_i, time, steps)
                     if not new_element.constraint:
-                        metric = integration(np.array(new_element.points))
+                        metric = new_element.dist
                         population.insert(len(population), [metric, new_element]) 
                 except Exception as e:
                     pass
@@ -55,7 +53,7 @@ class Population:
                     mutation = self.mutation(member, theta_i, theta_f, time, steps)
                     mutation.find_points(theta_i, time, steps)
                     if not mutation.constraint:
-                        metric = integration(np.array(mutation.points))
+                        metric = mutation.dist
                         population.append([metric, mutation])
                 except Exception as e:
                     pass
@@ -105,7 +103,7 @@ class Population:
         return (sorted(population, key = getitem))[0:number_bests]
    
     def cross_over(self, parents, theta_i, theta_f, time, steps):
-        self.prob_adaptation(1/integration(np.array(parents[0].points)))
+        self.prob_adaptation(1/parents[0].dist)
         if random.random() <= self.p_c:
             parents[0].joint1 = parents[1].joint1
         if random.random() <= self.p_c:

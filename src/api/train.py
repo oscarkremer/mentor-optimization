@@ -33,7 +33,7 @@ if __name__ == "__main__":
     time = 10
     theta_i, pos_i = enter_position()
     theta_f, pos_f = enter_position()
-    optimized = Population(30, 10, 30, 0.7, 0.3, theta_i, theta_f, time, steps, pos_f)
+    optimized = Population(30, 10, 15, 0.7, 0.3, theta_i, theta_f, time, steps, pos_f)
     population = optimized.initialization(theta_i, theta_f, time, steps)
     optimized.generation(population, theta_i, theta_f, time, steps)
        
