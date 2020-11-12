@@ -1,11 +1,9 @@
-from .mentor import Mentor
-from .numerical import create_angles
-from .polinomy import Polinomy
+from .constants import *
 from .input import input_angles, input_cartesian
+from .numerical import create_angles
 
 __all__ = [
-    'mentor',
-    'numerical',
-    'polinomy',
-    'input'
+    'constants',
+    'input',
+    'numerical'
 ]

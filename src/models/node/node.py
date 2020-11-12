@@ -1,48 +1,103 @@
-import random
+'''
+Este script define a classe de cada elmento da população 
+
+Este arquivo pode ser importado como um módulo utilizando:
+from .node.node import Node
+
+Esta importação é feita apenas dentro da pasta models. Para
+alterar esta condição modifique o __init__ que encontra-se 
+junto a este arquivo.
+'''
+
 import numpy as np
-from functools import partial
-from src.utils import Mentor, Polinomy
+from src.mentor import Mentor
+from src.polinomy import Polinomy
 from src.utils.numerical import create_angles
+from src.utils.constants import MAXIMUM_VELOCITY, POINTS
 
 class Node:
-    def __init__(self, theta_i, theta_f, time, steps, final_point):
-        self.x = final_point[0]
-        self.y = final_point[1]
-        self.z = final_point[2]
+    '''
+    Classe de cada elemento da população. A classe será definida
+    por elementos que obedeçam as leis de cinemática do robô mentor,
+    além de limitações (constraints) de velocidade e posição.
+
+    Atributos
+    ----------
+    joint : list
+        List contendo tempo, angulos e velocidades discretizadas.
+    dist: int
+        Métrica de distância percorrida do elemento.
+    points: int
+        Coordenadas cartesianos do elemento ao longo do tempo.
+    angle: Numpy Array
+        Vetor bidimensional dos ângulos de todas as juntas ao
+        longo do tempo.
+    constraint: bool
+        Tag para identificar violação de constraints por parte do
+        elemento. Velocidade máxima permitida definida em src/utils/constants.py
+
+    Métodos
+    -------
+    find_points(self, parents, theta_i, theta_f, time, steps):
+        Efetua a operação de cross-over com base em dois pais de um membro.
+
+    test_velocity(self, member, theta_i, theta_f, time, steps):
+        Efetua a operação de mutação em um membro da população.
+    '''
+    def __init__(self, thetas_i, thetas_f, time, steps):
+        '''
+        Parâmetros
+        ----------
+        theta_i:
+            Lista de ângulos inicias das juntas.
+        theta_i:
+            Lista de ângulos finais das juntas.
+        time: float
+            Tempo de duração da simulação.
+        steps: int
+            Lista com número de pontos presentes para divisão 
+            e criação de novos polinômios.
+        
+        '''
         times, thetas, omegas = [], [], []
+        angles_elements = [list(create_angles(theta_i, theta_f, time, steps)) for theta_i, theta_f in zip(thetas_i, thetas_f)]
         for i in range(5):
-            deltas, delta_thetas, delta_omegas = create_angles(theta_i[i], theta_f[i], time, steps)
+            deltas, delta_thetas, delta_omegas = create_angles(thetas_i[i], thetas_f[i], time, steps)
             times.append(deltas)
             thetas.append(delta_thetas)
             omegas.append(delta_omegas)
-        self.joint1 = [times[0], thetas[0], omegas[0]]
-        self.joint2 = [times[1], thetas[1], omegas[1]]
-        self.joint3 = [times[2], thetas[2], omegas[2]]
-        self.joint4 = [times[3], thetas[3], omegas[3]]
-        self.joint5 = [times[4], thetas[4], omegas[4]]
+        self.joint = [[times[i], thetas[i], omegas[i]] for i in range(5)]
 
     def find_points(self, theta_i, time, steps):    
+        '''
+        Método para criação das curvas de cada elemento, aplicação de
+        cinemática para encontrar variáveis cartesianas, verificação de 
+        métrica e constraints
+        
+        Parâmetros
+        ----------
+        theta_i: list
+            Lista de ângulos inicias das juntas.
+        time: float
+            Tempo de duração da simulação.
+        steps: int
+            Lista com número de pontos presentes para divisão 
+            e criação de novos polinômios.
+        '''
         mentor = Mentor()
-        angles, points, polynomies = [], [], []
+        points, polynomies = [], []
         for j in range(steps-1):
             sub_polynomies = []
-            sub_polynomies.append(Polinomy(self.joint1[0][j], self.joint1[0][j+1], self.joint1[1][j], self.joint1[1][j+1], self.joint1[2][j], self.joint1[2][j+1], number = np.ceil(150*(self.joint1[0][j+1] - self.joint1[0][j])/time)))
-            sub_polynomies.append(Polinomy(self.joint2[0][j], self.joint2[0][j+1], self.joint2[1][j], self.joint2[1][j+1], self.joint2[2][j], self.joint2[2][j+1], number = np.ceil(150*(self.joint2[0][j+1] - self.joint2[0][j])/time)))
-            sub_polynomies.append(Polinomy(self.joint3[0][j], self.joint3[0][j+1], self.joint3[1][j], self.joint3[1][j+1], self.joint3[2][j], self.joint3[2][j+1], number = np.ceil(150*(self.joint3[0][j+1] - self.joint3[0][j])/time)))
-            sub_polynomies.append(Polinomy(self.joint4[0][j], self.joint4[0][j+1], self.joint4[1][j], self.joint4[1][j+1], self.joint4[2][j], self.joint4[2][j+1], number = np.ceil(150*(self.joint4[0][j+1] - self.joint4[0][j])/time)))
-            sub_polynomies.append(Polinomy(self.joint5[0][j], self.joint5[0][j+1], self.joint5[1][j], self.joint5[1][j+1], self.joint5[2][j], self.joint5[2][j+1], number = np.ceil(150*(self.joint5[0][j+1] - self.joint5[0][j])/time)))
+            for i in range(5):
+                sub_polynomies.append(Polinomy(self.joint[i][0][j], self.joint[i][0][j+1], self.joint[i][1][j], self.joint[i][1][j+1], self.joint[i][2][j], self.joint[i][2][j+1], number=POINTS))
             polynomies.append(sub_polynomies)
         angles = [np.array([theta_i[i]]) for i in range(5)]
         for i in range(steps-1):
             for j in range(len(angles)):
                 angles[j] = np.concatenate((angles[j], polynomies[i][j].thetas[1:])) 
         index = np.min([angles[0].shape[0], angles[1].shape[0], angles[2].shape[0], angles[3].shape[0], angles[4].shape[0]])
-        self.angle_1 = angles[0][0:index]
-        self.angle_2 = angles[1][0:index]
-        self.angle_3 = angles[2][0:index]
-        self.angle_4 = angles[3][0:index]
-        self.angle_5 = angles[4][0:index]
-        angles = np.transpose([self.angle_1, self.angle_2, self.angle_3, self.angle_4, self.angle_5])
+        self.angle = [angles[i][0:index] for i in range(5)]
+        angles = np.transpose(self.angle)
         dist = 0 
         for i, angle in enumerate(angles):
             new_pos, rot = mentor.get_position(angle, z_axis=5)
@@ -58,22 +113,19 @@ class Node:
         self.test_velocity(time)
 
     def test_velocity(self, time):
-        for i in range(self.angle_1.shape[0]-1):
-            if abs(self.angle_1[i+1]-self.angle_1[i])/(time/self.angle_1.shape[0]) > 6 or self.final_points():
-                self.constraint = True
-            if abs(self.angle_2[i+1] - self.angle_2[i])/(time/self.angle_1.shape[0]) > 6 or self.final_points():
-                self.constraint = True
-            if abs(self.angle_3[i+1] - self.angle_3[i])/(time/self.angle_1.shape[0]) > 6 or self.final_points():
-                self.constraint = True
-            if abs(self.angle_4[i+1] - self.angle_4[i])/(time/self.angle_1.shape[0]) > 6 or self.final_points():
-                self.constraint = True
-            if abs(self.angle_5[i+1] - self.angle_5[i])/(time/self.angle_1.shape[0]) > 6 or self.final_points():
-                self.constraint = True
+        '''
+        Método para verificação dos constraints. Com base na velocidade
+        máxima permitida definida nas constantes.
 
-    def final_points(self):
-        tol=0.01
-        if abs(self.points[-1][0]-self.x)>tol or abs(self.points[-1][1]-self.y)>tol or abs(self.points[-1][2]-self.z)>tol:
-            print('here')
-            return True
-        else:
-            return False
+        Parâmetros
+        ----------
+        time: float
+            Tempo de duração da simulação.
+        '''
+        for i in range(self.angle[0].shape[0]-1):
+            for j in range(5):
+                if abs(self.angle[j][i+1]-self.angle[j][i])/(time/self.angle[j].shape[0]) > MAXIMUM_VELOCITY:
+                    self.constraint = True
+                    break
+            if self.constraint:
+                break                
