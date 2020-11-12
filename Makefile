@@ -1,7 +1,12 @@
 .DEFAULT_GOAL := check
 PYTHON_INTERPRETER = python3
 PROJECT_NAME := mentor
-
+BLUE = \033[0;34m
+DEFAULT = \033[0m
+RED = \033[0;31m
+WHITE = \033[1;37m
+GENERATIONS = 15
+POPULATION = 4
 ################################################################################
 # COMMANDS                                                                     #
 ################################################################################
@@ -12,17 +17,13 @@ setup: check_environment
 	@cp -n .env.example .env
 	@echo "---> To complete setup please run \n---> source activate $(PROJECT_NAME)"
 
-install:
+install: dirs
 	@echo "---> Installing dependencies"
 	@conda env update -f environment.yml
 
 dirs:
-	@echo "---> Creating data dirs"
-	@mkdir -p data/logs
-	@mkdir -p data/binary/models
-	@mkdir -p data/processed
-	@mkdir -p data/predicted
-	@mkdir -p data/raw
+	@echo "---> Creating data folder for results"
+	@mkdir -p data/results
 	@echo "---> Done"
 
 kinematics:
@@ -31,18 +32,17 @@ kinematics:
 
 train:
 	@echo "---> Running Genetic Algorithms to Optimize Trajectory Planning"
-	@$(PYTHON_INTERPRETER) src/api/train.py 
+	@$(PYTHON_INTERPRETER) src/api/train.py --population $(POPULATION) --generations $(GENERATIONS)
 
 help:
 	@echo "--- List of Commands ---"
-	@echo "--- install: Start installation of environment"
-	@echo "--- setup: Check environment and setup variables"
-	@echo "--- dirs: Create directory to save plots and .csv"
-	@echo "--- help: See list of possible commands"
-	@echo "--- kinematics: Run kinematics calculations for Mentor Robot"
-	@echo "--- train: Start running genetic algorithm for trajectory optimization"
-	@echo "--- clean: Remove unecessary files"
-	@echo "--- dirs: Create directory to save plots and .csv"
+	@echo "--- ${WHITE}install${DEFAULT}: Start installation of environment"
+	@echo "--- ${WHITE}setup${DEFAULT}: Check environment and setup variables"
+	@echo "--- ${WHITE}dirs${DEFAULT}: Create directory to save .csv files"
+	@echo "--- ${WHITE}help${DEFAULT}: See list of possible commands"
+	@echo "--- ${WHITE}kinematics${DEFAULT}: Run kinematics calculations for Mentor Robot"
+	@echo "--- ${WHITE}train${DEFAULT}: Start running genetic algorithm for trajectory optimization"
+	@echo "--- ${WHITE}clean${DEFAULT}: Remove unecessary files"
 
 clean:
 	find . -type f -name "*.py[co]" -delete
