@@ -30,7 +30,7 @@ kinematics:
 	@echo "---> Running Kinematics-Algorithms"
 	@$(PYTHON_INTERPRETER) src/api/kinematics.py 
 
-train:
+genetic:
 	@echo "---> Running Genetic Algorithms to Optimize Trajectory Planning"
 	@$(PYTHON_INTERPRETER) src/api/train.py --population $(POPULATION) --generations $(GENERATIONS)
 
@@ -41,7 +41,7 @@ help:
 	@echo "--- ${WHITE}dirs${DEFAULT}: Create directory to save .csv files"
 	@echo "--- ${WHITE}help${DEFAULT}: See list of possible commands"
 	@echo "--- ${WHITE}kinematics${DEFAULT}: Run kinematics calculations for Mentor Robot"
-	@echo "--- ${WHITE}train${DEFAULT}: Start running genetic algorithm for trajectory optimization"
+	@echo "--- ${WHITE}genetic${DEFAULT}: Start running genetic algorithm for trajectory optimization"
 	@echo "--- ${WHITE}clean${DEFAULT}: Remove unecessary files"
 
 clean:

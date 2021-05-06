@@ -1,8 +1,8 @@
 '''
-Este script define a classe de cada elmento da população 
+Este script define a classe de cada elemento da população 
 
 Este arquivo pode ser importado como um módulo utilizando:
-from .node.node import Node
+from src.models.node import Node
 
 Esta importação é feita apenas dentro da pasta models. Para
 alterar esta condição modifique o __init__ que encontra-se 
@@ -114,7 +114,7 @@ class Node:
 
     def test_velocity(self, time):
         '''
-        Método para verificação dos constraints. Com base na velocidade
+        Método para verificação dos constraints com base na velocidade
         máxima permitida definida nas constantes.
 
         Parâmetros

@@ -17,14 +17,14 @@ def create_angles(theta_i, theta_f, final_time, steps):
     Parâmetros
     ----------
     theta_i: list
-        Lista contendo posições angulares iniciais, de todas juntas.
+        Lista contendo posições angulares iniciais de todas juntas.
     theta_f: list
-        Lista contendo posições angulares finais, de todas juntas.
+        Lista contendo posições angulares finais de todas juntas.
     final_time : int
         Tempo de duração da simulação.
     steps : int
         Inteiro que representa o número de polinômios que serão
-        criados
+        criados.
 
     Parâmetros
     ----------

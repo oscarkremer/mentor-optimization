@@ -2,7 +2,7 @@
 Este script define a classe de polinômios.
 
 Este arquivo pode ser importado como um módulo utilizando:
-from src.models import Population
+from src.polinomy import Polinomy
 '''
 import numpy as np
 
@@ -13,13 +13,10 @@ class Polinomy:
 
     Atributos
     --------
-    steps : int
-        Inteiro que descreve numero de pontos do polinômio
     t_i: float
-        Instante inicial da curva
-        omega_i: list
+        Instante inicial da curva.
     t_f: float
-        Instante final da curva
+        Instante final da curva.
     theta_i: list
         Lista contendo posições angulares iniciais de todas juntas.       
     theta_f: list
@@ -28,14 +25,6 @@ class Polinomy:
         Lista contendo velocidades angulares iniciais de todas juntas.
     omega_f: list
         Lista contendo velocidades angulares finais de todas juntas.
-    a: Numpy Array
-        Vetor de coeficientes que definem o polinômio de terceira ordem.
-    thetas: Numpy Array
-        Vetor contendo os ângulos das juntas ao longo do tempo na forma de numpy
-        array.
-    delta_thetas: Numpy Array
-        Vetor contendo as velocidades angulares das juntas ao longo do tempo na 
-        forma de numpy array.
 
     Métodos
     -------    

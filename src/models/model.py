@@ -51,7 +51,7 @@ class Population:
         Salva as informações de trajetória e desempenhos em um .csv
 
     prob_adaptation(self, fitness):
-        Efetua a adaptação das probabiliades de acordo com o desempenho médio
+        Efetua a adaptação das probabilidades de acordo com o desempenho médio
 
     analysis(self, population):
         Calcula os parâmetros estatísticos presentes e utilizados na adaptação.
@@ -98,7 +98,7 @@ class Population:
         Método para inicialização da primeira geração, 
         criando o número de elementos definidos com o atributo
         initial. Com o constraint dos elementos verificado
-        considera-se apenas os membros válidso.
+        considera-se apenas os membros válidos.
 
         Parâmetros
         ----------
@@ -107,7 +107,7 @@ class Population:
         theta_f: list
             Lista de ângulos finais que serão ocupados pelo robô.
         time: list
-            Lista de instantes de tempo
+            Lista de instantes de tempo.
         steps: list
             Lista com número de pontos presentes para divisão 
             e criação de novos polinômios.
@@ -115,7 +115,7 @@ class Population:
         Retorna
         -------
         population: list
-            Lista de elements e métrica, que contém cada elemento
+            Lista de elementos e métrica, que contém cada elemento
             com seu respectivo desempenho.
         '''
         population = []
@@ -148,7 +148,7 @@ class Population:
         theta_f: list
             Lista de ângulos finais que serão ocupados pelo robô.
         time: list
-            Lista de com o vetor de instantes de tempo
+            Lista de com o vetor de instantes de tempo.
         steps: list
             Lista com número de pontos presentes para divisão 
             e criação de novos polinômios.
@@ -190,11 +190,11 @@ class Population:
         ----------
         actual_best: list
             Lista contendo melhor desempenho da população ao longo
-            das gerações, salvando a informação em points.csv
+            das gerações, salvando a informação em points.csv.
         best_of_all: list
             Lista contendo a métrica e o melhor elemento, utilizada 
             para salvar a trajetória no espaço cartesiano e de juntas
-            no arquivo points.csv
+            no arquivo points.csv.
         '''
         dataframe, points = pd.DataFrame(), pd.DataFrame()
         dataframe['distance'] = actual_best
@@ -234,13 +234,13 @@ class Population:
     def analysis(self, population):
         '''
         Método para cálculo dos parâmetros estatísticos vinculados
-        ao processo de adaptação das probabilidades, cálcula-se 
+        ao processo de adaptação das probabilidades, calcula-se 
         desvio padrão, valor máximo e médio.
 
         Parâmetros
         ----------
         population: list
-            Lista de elements e métrica, que contém cada elemento
+            Lista de elementos e métrica, que contém cada elemento
             com seu respectivo desempenho.
         '''
         fitness = [1/member[0] for member in population]
@@ -283,7 +283,7 @@ class Population:
         Retorna
         -------
         Novo elemento criado pela troca do material genético presente
-        entre os dois pais.Lista de elements e métrica, que contém cada elemento
+        entre os dois pais. Lista de elements e métrica que contém cada elemento
         com seu respectivo desempenho.
         
         '''
@@ -295,7 +295,7 @@ class Population:
 
     def mutation(self, member, theta_i, theta_f, time, steps):
         '''
-        Método para operação de mutação dentro de um elemento
+        Método para operação de mutação dentro de um elemento.
 
         Parâmetros
         ----------

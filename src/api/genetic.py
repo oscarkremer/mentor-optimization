@@ -10,7 +10,7 @@ O script pede a inserção da posição inicial e final do atuador
 final e ângulos finais e iniciais para orientação do mesmo.
 
 Com o ambiente mentor ativado no conda este script pode ser 
-executado com o comando make train.
+executado com o comando make genetic.
 '''
 import argparse
 import numpy as np

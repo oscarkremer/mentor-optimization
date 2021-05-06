@@ -1,7 +1,8 @@
 '''
 Este script define constantes presentes dentro do código.
 
-As variáveis podem ser importadas como um módulo utilizando:
+As variáveis podem ser importadas como um módulo utilizando,
+para o caso da importação da variável VARIABLE.
 from src.utils.constants import VARIABLE
 '''
 

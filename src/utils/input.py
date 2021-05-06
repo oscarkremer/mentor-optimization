@@ -27,14 +27,14 @@ def input_angles():
 def input_cartesian():
     '''
     Função para input das variaveis de posição e orientação do atuador 
-    final do robo no plano cartesiano. Os angulo alpha, beta e gamma
+    final do robo no plano cartesiano. Os ângulos alpha, beta e gamma
     são tratados em radianos mas entrados em graus. 
 
     Retorna
     -------
     pos
-        Booleano que será verdadeiro caso a posição/orientação
-        inseridas não sejam alcançáveis no espaço de tarefa.
+        Booleano que será verdadeiro caso o par posição/orientação
+        inseridas não seja alcançável no espaço de tarefa.
     angles
         Lista com os ângulos da orientação do robô (alpha, beta, gamma).
     '''

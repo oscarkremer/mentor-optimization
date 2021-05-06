@@ -12,7 +12,7 @@ import numpy as np
 
 class Mentor:
     '''
-    Classe de cada elemento da população. A classe será definida
+    Classe de um robo mentor. A classe será definida
     por elementos que obedeçam as leis de cinemática do robô mentor,
     além de limitações (constraints) de velocidade e posição.
 
@@ -51,7 +51,8 @@ class Mentor:
     '''
     def __init__(self):
         '''
-        Não há parâmetros de entrada neste método.
+        Não há parâmetros de entrada neste método. Apenas a definição dos
+        parâmetros de Denavit-Hartenberg.
         '''
         self.alpha = [0, -np.pi/2, 0, 0, -np.pi/2]
         self.a = [0, 0, 17.2739, 15.5, 0]
@@ -59,10 +60,10 @@ class Mentor:
 
     def test_inverse_kinematics(self, pos, rot, tag_theta1=True, tag_theta2=True, tag_theta3=True):  
         '''
-        Método de teste de todos os ângulos, para verificação se os quadrantes 
-        se encontram corretos. Ajustes dos ângulos com base nas tags especificadas. A função de 
-        cinemática inversa é chamada para encontrar os ângulos, para então serem passados para
-        função verify que testará se os mesmos estão corretos.
+        Método de teste de todos os ângulos, fazendo o cálculo da cinemática inversa e 
+        a verificação se os quadrantes estão corretos. Ajustes dos ângulos com base nas 
+        tags especificadas. A função de cinemática inversa é chamada para encontrar os ângulos, 
+        para então serem passados para função verify que testará se os mesmos estão corretos.
 
         Parâmetros
         ----------
@@ -122,7 +123,7 @@ class Mentor:
 
     def _inverse_kinematics(self, pos, orientation, tag_theta1=True, tag_theta2=True, tag_theta3=True):
         '''
-        Método para cálculo da cinemática inversa. Esta funçao implementa o equacionamento
+        Método para cálculo da cinemática inversa. Esta função implementa o equacionamento
         mostrado na documentação do projeto. A correção de quadrante é feita com base
         nas tags de cada ângulo.
 
@@ -231,7 +232,7 @@ class Mentor:
 
         Retorna
         -------
-        Cálculo da matriz de rotação encontrada a partir dos ângulos alpha-beta-gamma.
+        Matriz de rotação encontrada a partir dos ângulos alpha-beta-gamma.
         '''
         return [[np.cos(alpha)*np.cos(beta), np.cos(alpha)*np.sin(beta)*np.sin(gamma) - np.sin(alpha)*np.cos(gamma), np.cos(alpha)*np.sin(beta)*np.cos(gamma) + np.sin(alpha)*np.sin(gamma) ],
                         [np.sin(alpha)*np.cos(beta), np.sin(alpha)*np.sin(beta)*np.sin(gamma) + np.cos(alpha)*np.cos(gamma), np.sin(alpha)*np.sin(beta)*np.cos(gamma) - np.cos(alpha)*np.sin(gamma) ],
