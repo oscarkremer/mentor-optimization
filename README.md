@@ -3,13 +3,6 @@
 Here we submitted all code snippets to help with artificial intelligence coding to deal with an 
 optimization problem, where the trajectory planning of a didactic robot is tackled.
 
-## Setup your base-repo
-
-`$ git remote add base git@github.com:oscarkremer/mentor.git`
-
-To update and get latest features
-
-`$ git pull --rebase base master`
 
 ## Install
 
@@ -78,7 +71,7 @@ Pipeline to generate trajectories for Mentor didactic robot using artificial int
         │
         └── utils  <- Scripts to insert data, constants and numerical manipulations
             │   
-            ├── __init__.py    <- Makes src a Python module
+            ├── __init__.py
             │
             ├── constants.py
             │
