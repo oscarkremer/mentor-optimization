@@ -1,4 +1,6 @@
 __pycache__/
+.DS_Store
+data/.DS_Store
 *.py[cod]
 *.so
 .Python
