@@ -32,7 +32,7 @@ kinematics:
 
 genetic:
 	@echo "---> Running Genetic Algorithms to Optimize Trajectory Planning"
-	@$(PYTHON_INTERPRETER) src/api/train.py --population $(POPULATION) --generations $(GENERATIONS)
+	@$(PYTHON_INTERPRETER) src/api/genetic.py --population $(POPULATION) --generations $(GENERATIONS)
 
 help:
 	@echo "--- List of Commands ---"

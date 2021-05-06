@@ -20,5 +20,6 @@ dependencies:
     - seaborn
     - matplotlib
     - setuptools
+    - tqdm
     - wheel
     - -e .

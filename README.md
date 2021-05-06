@@ -32,10 +32,10 @@ Pipeline to generate trajectories for Mentor didactic robot using artificial int
 
 
     ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make kinematics` or `make train`
+    ├── Makefile           <- Makefile with commands like `make kinematics` or `make genetic`
     ├── README.md          <- The top-level README for developers using this project.
     ├── data
-    │   └── processed      <- The final, canonical data sets for modeling.The original, immutable data dump.
+    │   └── results        <- The folder to save .csv files with the performance of the model.
     │
     ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
     │                         the creator's initials, and a short `-` delimited description, e.g.
@@ -50,7 +50,7 @@ Pipeline to generate trajectories for Mentor didactic robot using artificial int
         │   │
         │   ├── kinematics.py      <- Run kinematics and inverse kinematics
         │   │
-        │   └── train.py           <- Run genetic algorithm
+        │   └── genetic.py           <- Run genetic algorithm
         │
         ├── mentor         <- Define mentor class
         │   │   

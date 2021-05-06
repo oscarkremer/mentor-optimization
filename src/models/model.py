@@ -8,6 +8,7 @@ import itertools
 import random
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 from .node.node import Node
 from src.utils.numerical import create_angles
 from src.utils.constants import PATH
@@ -120,7 +121,6 @@ class Population:
         '''
         population = []
         i = 0
-        print('Population - First Generation Initilization')
         while i < self.initial:
             element = Node(theta_i, theta_f, time, steps)
             element.find_points(theta_i, time, steps)
@@ -155,11 +155,10 @@ class Population:
         '''
         best_of_generation = []
         actual_best = []
-        for i in range(self.generations):
+        for i in tqdm(range(self.generations)):
             population = self.selection(population, number_bests = self.size)
             actual_best.append(self.selection(population, number_bests = 1)[0][0])
             self.analysis(population)
-            print('Start Cross Over - {} \n'.format(i+1), end='')
             members = [member[1] for member in population]
             combinations = list(itertools.product(members, repeat=2))
             for combination in combinations:
@@ -168,7 +167,6 @@ class Population:
                 if not new_element.constraint:
                     population.insert(len(population), [new_element.dist, new_element]) 
             self.analysis(population)
-            print('Start mutation - {} \n'.format(i+1), end='')
             for member in population:
                 mutation = self.mutation(member, theta_i, theta_f, time, steps)
                 mutation.find_points(theta_i, time, steps)
