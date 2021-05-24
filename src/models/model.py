@@ -123,7 +123,7 @@ class Population:
         i = 0
         while i < self.initial:
             element = Node(theta_i, theta_f, time, steps)
-            element.find_points(theta_i, time, steps)
+            element.find_points()
             if not element.constraint:
                 i+=1
                 metric = element.dist
@@ -163,13 +163,13 @@ class Population:
             combinations = list(itertools.product(members, repeat=2))
             for combination in combinations:
                 new_element = self.cross_over(combination)
-                new_element.find_points(theta_i, time, steps)
+                new_element.find_points()
                 if not new_element.constraint:
                     population.insert(len(population), [new_element.dist, new_element]) 
             self.analysis(population)
             for member in population:
                 mutation = self.mutation(member, theta_i, theta_f, time, steps)
-                mutation.find_points(theta_i, time, steps)
+                mutation.find_points()
                 if not mutation.constraint:
                     population.append([mutation.dist, mutation])
             best_of_generation.append(self.selection(population, number_bests = 1)[0][0])

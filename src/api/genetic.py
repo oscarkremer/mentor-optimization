@@ -1,16 +1,18 @@
 '''
-Este script permite o treinamento do algoritmo genético para 
-otimização do robô mentor, assim como publicado no trabalho:  
+This script allows the movement optimization executed by
+Robot Mentor as published in:
 A Genetic Approach for Trajectory Optimization Applied to a 
 Didactic Robot. O. S. Kremer; M. A. B. Cunha; F. S. Moraes; 
 S. S. Schiavon. 2019 Latin American Robotics Symposium (LARS), 
 2019 Brazilian Symposium on Robotics (SBR).
 
-O script pede a inserção da posição inicial e final do atuador 
-final e ângulos finais e iniciais para orientação do mesmo.
+To execute the optimization the user needs to insert the
+initial and final position of the Mentor Robot, as well the 
+initial and final orientation defined here in terms of angles
+alpha, beta and gamma.
 
-Com o ambiente mentor ativado no conda este script pode ser 
-executado com o comando make genetic.
+With the conda environment activate this script can be run using 
+----> make genetic.
 '''
 import argparse
 import numpy as np
