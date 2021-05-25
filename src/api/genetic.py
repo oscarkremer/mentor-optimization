@@ -23,23 +23,23 @@ from src.utils.input import input_cartesian
 
 def calculate_thetas(pos, angles):
     '''
-    Função para calcular ângulos das juntas a partir
-    de ângulos de orientação e posição.
+    Function to compute joint angles from position 
+    and orientation.
 
-    Parâmetros
+    Parameters
     ----------
     pos : list
-        Lista com as posições (x, y, z) no espaço cartesiano.
+        List with position (x, y, z) in the cartesian space.
     angles: list
-        Lista com os ângulos que representam a orientação XYZ 
-        do atuador final.
-    Retorna
+        List with the orientation XYZ of the end effector grip.
+
+    Returns
     -------
     error
-        Booleano que será verdadeiro caso a posição/orientação
-        inseridas não sejam alcançáveis no espaço de tarefa.
+        Boolean that indicates error in movement in case the position 
+        is not physically possible.
     theta
-        Lista com os ângulos do robô para a posição.
+        List containing joint angles of the robot.
     '''
     robot = Mentor()
     rot  = robot.get_orientation(angles[0], angles[1], angles[2])
@@ -59,53 +59,50 @@ def calculate_thetas(pos, angles):
 
 def enter_position():
     '''
-    Função para entrar com os ângulo e posição e testar 
-    se são possíveis, mantendo a inserção em um loop até
-    que condições possível sejam inseridas
+    Function to enter with input angles and positions until
+    there exists a set of angles for such set.
 
-    Parâmetros
+    Parameters
     ----------
-    Não há parâmetros de entrada nesta função
-
-    Retorna
+    This functions doesn't have any input parameter.
+    
+    Returns
     -------
     theta
-        Lista com os ângulos das juntas encontrados na 
-        cinemática inversa.
+        List containing joint angles of the robot.
     pos
-        Lista contendo as coordenadas cartesianas que definem
-        a posição inserida.
+        List containing position inputed initially.
     '''
     error = True
     while error:
         pos, angles = input_cartesian()    
         error, theta = calculate_thetas(pos, angles)
         if error:
-            print('Erro !!! \n Posição e/ou orientação não é atingível pelo atuador !!! \n Por favor teste outros valores!')
+            print('Error !!! \n Position and/or orientation not possible !!! \n Please test other values!')
     return theta, pos
 
 
 def main(steps, time, generations, mode, population, cross_over, mutation):
     '''
-    Função principal que inclui inserção de posição e orientação desejada, 
-    instanciação da população para otimização e execução do algoritmo de otimização.
+    Main function which includes insertion of desired position and orientation,
+    as well instatiation of Population for genetic algorithm.
 
-    Parâmetros
+    Parameters
     ----------
     steps: int
-        Número de sub-polinômios que definem as curvas de trajetória das juntas.
+        Number of sub-polynomes used to create a joint trajectory.
     time: float
-        Tempo que irá durar o movimento executado pelo robô Mentor.
+        Time duration of the movement.
     generations: int
-        Número de gerações que serão utilizados.
+        Number of generations used in genetic optimization.
     mode: str
-        Modo de adaptação das probabilidades.
+        Probabilities adaptation mode.
     population: int
-        Tamanho da população para definir etapa de seleção.
+        Population size defined in the selection stage.
     cross_over: float
-        Probabilidade de ocorrer cross-over entre dois elementos distintos.
+        Probability for cross-over.
     mutation: float
-        Probabilidade de ocorrer mutação nos elementos.
+        Probability for mutation.
     '''
     theta_i, pos_i = enter_position()
     theta_f, pos_f = enter_position()
@@ -115,7 +112,7 @@ def main(steps, time, generations, mode, population, cross_over, mutation):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser('Inicializando Algoritmo de Otimização')
+    parser = argparse.ArgumentParser('Inicialition --- Optimization Algorithm')
     parser.add_argument('--mode', default='normal', type=str, 
         choices=['normal', 'adaptive'])
     parser.add_argument('--steps', default=3, type=int)
