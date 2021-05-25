@@ -1,10 +1,9 @@
 '''
-Este script define a classe Mentor, incluindo métodos
-matemáticos para cálculo de cinématica direta e inversa
-do manipulador, orientação e posição do atuador final,
-verificação de posição e correções de quadrante. 
+This script defines the Mentor class package, where there are
+specified as Mentor methods the computations of direct and
+inverse kinematics
 
-Este arquivo pode ser importado como um módulo utilizando:
+This package can be imported with:
 from src.mentor import Mentor
 '''
 import itertools
@@ -12,47 +11,48 @@ import numpy as np
 
 class Mentor:
     '''
-    Classe de um robo mentor. A classe será definida
-    por elementos que obedeçam as leis de cinemática do robô mentor,
-    além de limitações (constraints) de velocidade e posição.
+    Mentor Class. This class represents the mentor didactic robot, obeying 
+    the laws of direct and inverse kinematics, and any physical constraint
+    of movement, both angulars position or velocity. 
 
-    Atributos
+    Attributes
     ----------
     alpha : list
-        List contendo tempo, angulos e velocidades discretizadas.
+        Angle list of Denavit Hartenberg parameter.
     a: list
-        Métrica de distância percorrida do elemento.
+        List of perpendicular distance between joints.
     d: list
-        Coordenadas cartesianos do elemento ao longo do tempo.
-
-    Métodos
+        List of perpendicular distance between links.
+    
+    Methods
     -------
     test_inverse_kinematics(self, pos, rot, tag_theta1=True, tag_theta2=True, tag_theta3=True):  
-        Método de teste de todos os ângulos, para verificação se os quadrantes se encontram corretos.
+        Method to test with a certain set of condition represents a possible situation for the robot.
     get_angles(self, pos, rot):
-        Cálculo de cinemática inversa para todas as possibilidades de quadrantes entre os três primeiros
-        atuadores rotacionais do robô.
+        Method to test with all possible scenarious of angles.
     _inverse_kinematics(self, pos, orientation, tag_theta1=True, tag_theta2=True, tag_theta3=True):
-        Cálculo da cinemática inversa para uma cenário específico.
+        Angles computation in inverse kinematics.
     verify(self, pos, rot, returned_pos, returned_rot):
-        Verificação se posição encontrada pela cinemática é compatível com o desejado.
+        Verification if computed position is equal to desired position.
     get_position(self, theta, z_axis=0):
-        Aplicação de cinemática direta para encontrar posição do atuador.
+        Method to apply direct kinematics 
     get_orientation(self, alpha, beta, gamma):
-        Aplicação de cinemática direta para encontrar orientação do atuador.    
+        Method to get end effector orientation consideration Alpha, Beta and
+        Gamma - XYZ angles.
     separate(self, matrix, z_axis):
-        Separação da matriz extendida nas parcelas de rotação e translação.    
+        Method to separate a 4x4 matrix in rotational matrix and position array.
     denavit(self, theta, i):
-        Aplicação de denavit hartenberg para encontrar matriz de transformação.
+        Method to apply the Denavit-Hartenberg to find the transformation matrix.
     fix_quadrante(self, sin, cos):
-        Ajustar quadrante a partir de sin e cos de ângulo.
+        Method to adjust the angle quadrant from its sine and cosine.
     fix_theta(self, param, tag, angle):
-        Ajustar quadrante a partir de qualquer parâmetro de entrada possivel.
+        Method to adjust the angle quadrant from any possible set o parameters.
     '''
     def __init__(self):
         '''
-        Não há parâmetros de entrada neste método. Apenas a definição dos
-        parâmetros de Denavit-Hartenberg.
+        The constructor method doesn't use any parameters. 
+        This method is only responsible to define the Denavit-Hartenberg parameters as 
+        Mentor attributes.
         '''
         self.alpha = [0, -np.pi/2, 0, 0, -np.pi/2]
         self.a = [0, 0, 17.2739, 15.5, 0]
@@ -60,12 +60,9 @@ class Mentor:
 
     def test_inverse_kinematics(self, pos, rot, tag_theta1=True, tag_theta2=True, tag_theta3=True):  
         '''
-        Método de teste de todos os ângulos, fazendo o cálculo da cinemática inversa e 
-        a verificação se os quadrantes estão corretos. Ajustes dos ângulos com base nas 
-        tags especificadas. A função de cinemática inversa é chamada para encontrar os ângulos, 
-        para então serem passados para função verify que testará se os mesmos estão corretos.
+        Method to test with a certain set of condition represents a possible situation for the robot.
 
-        Parâmetros
+        Parameters
         ----------
         pos: list
             Lista com informações de posição do atuador final do manipuldor 
@@ -73,14 +70,14 @@ class Mentor:
         rot: list
             Matriz de rotação do atuador final do manipulador no espaço 
             cartesiano.
-        tag_theta1: bool(opcional):
+        tag_theta1: bool(optional):
             Tag de verificação se há erro no quadrante do ângulo 1.
-        tag_theta2: bool(opcional):
+        tag_theta2: bool(optional):
             Tag de verificação se há erro no quadrante do ângulo 2.
-        tag_theta3: bool(opcional):
+        tag_theta3: bool(optional):
             Tag de verificação se há erro no quadrante do ângulo 3.
 
-        Retorna
+        Returns
         -------
         tag:
             Verificação de há erro ou não na cinemática inversa.
@@ -95,11 +92,9 @@ class Mentor:
 
     def get_angles(self, pos, rot):
         '''
-        Método para efetuar cinemática inversa em todos os cenários possíveis
-        de erros de quadrantes. Com base nisso é possível identificar se a 
-        posição/orientação inserida pelo usuário é atingível ou não pelo manipulador.
+        Method to test with all possible scenarious of angles.
 
-        Parâmetros
+        Parameters
         ----------
         pos: list
             Lista com informações de posição do atuador final do manipuldor 
@@ -108,7 +103,7 @@ class Mentor:
             Matriz de rotação do atuador final do manipulador no espaço 
             cartesiano.
 
-        Retorna
+        Returns
         -------
         tag:
             Booleano que identifica (se verdadeiro) se há erro e a posição é impossível
