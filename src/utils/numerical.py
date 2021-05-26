@@ -1,8 +1,9 @@
 '''
-Este script define as funções que criam os ângulos dos N polinômios
-de cada junta.
+This script defines the function to create the points in 
+angular position, angular velocity and time to create all the 
+sub-polynomial curves used in the joint trajectory curves.
 
-Este arquivo pode ser importado como um módulo utilizando:
+This module can be imported using:
 from src.utils.numerical import create_angles
 '''
 
@@ -11,25 +12,32 @@ import numpy as np
 
 def create_angles(theta_i, theta_f, final_time, steps):
     '''
-    Função para definição dos múltiplos polinômios presentes
-    para cada junta.
+    Function to create the sub-points in the random polynomial 
+    that the robots must follows in their joints.
 
-    Parâmetros
+    Parameters
     ----------
+
     theta_i: list
-        Lista contendo posições angulares iniciais de todas juntas.
+        List of joints initial angles.
     theta_f: list
-        Lista contendo posições angulares finais de todas juntas.
-    final_time : int
-        Tempo de duração da simulação.
-    steps : int
-        Inteiro que representa o número de polinômios que serão
-        criados.
+        List of joints final angles.
+    time: float
+        Duration of the movement (measured in seconds).
+    steps: int
+        Number of polynomial curves that will be generated
+        to create the complete joint trajectory 
 
-    Parâmetros
+    Returns
     ----------
-    number : int
-        Inteiro que representa o número de pontos do polinômio.
+    time: list
+        List of time points to create all the sub-polynomials.
+    theta: list
+        List of angular position points to create all 
+        the sub-polynomials.
+    omega: list
+        List of angular velocities points to create all 
+        the sub-polynomials.
     '''
     theta, omega, time = [theta_i], [0], [0]
     for i in range(steps-2):
@@ -44,7 +52,4 @@ def create_angles(theta_i, theta_f, final_time, steps):
         theta.sort()
     else:
         theta.sort(reverse=True)
-    return time, theta, omega
-
-
-        
+    return time, theta, omega        
