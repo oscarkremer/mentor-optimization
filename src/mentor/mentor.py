@@ -258,8 +258,8 @@ class Mentor:
 
         Returns
         -------
-        Matrix 4x4 extendida e triangular por blocos que contém 
-            matriz de rotação (3x3) e vetor de posição (3x1).
+        4x4 Block Triangular Matrix which contain both Rotation matrix (3x3) and 
+            the position vector (3x1).
         '''
         return  [[np.cos(theta[i]), -np.sin(theta[i]),  0,   self.a[i]],
             [np.sin(theta[i])*np.cos(self.alpha[i]), np.cos(theta[i])*np.cos(self.alpha[i]), -np.sin(self.alpha[i]), -np.sin(self.alpha[i])*self.d[i]],

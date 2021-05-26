@@ -8,10 +8,10 @@ S. S. Schiavon. 2019 Latin American Robotics Symposium (LARS),
 
 To execute the optimization the user needs to insert the
 initial and final position of the Mentor Robot, as well the 
-initial and final orientation defined here in terms of angles
-alpha, beta and gamma.
+initial and final orientation. The orientation is defined here 
+in terms of angles alpha, beta and gamma.
 
-With the conda environment activate this script can be run using 
+With the conda environment activate this script will run using 
 ----> make genetic.
 '''
 import argparse
@@ -36,21 +36,21 @@ def calculate_thetas(pos, angles):
     Returns
     -------
     error
-        Boolean that indicates error in movement in case the position 
-        is not physically possible.
+        Boolean that indicates error in movement if the pair 
+        position/orientation is not physically possible.
     theta
         List containing joint angles of the robot.
     '''
     robot = Mentor()
     rot  = robot.get_orientation(angles[0], angles[1], angles[2])
     matrix_G0 = [[rot[0][0], rot[0][1], rot[0][2], pos[0]],
-    [rot[1][0], rot[1][1], rot[1][2], pos[1]],
-    [rot[2][0], rot[2][1], rot[2][2], pos[2]],
-    [0, 0, 0, 1]]
+        [rot[1][0], rot[1][1], rot[1][2], pos[1]],
+        [rot[2][0], rot[2][1], rot[2][2], pos[2]],
+        [0, 0, 0, 1]]
     matrix_5G = [[1, 0, 0, 0],
-    [0, 1, 0, 0],
-    [0, 0, 1, -5],
-    [0, 0, 0, 1]]
+        [0, 1, 0, 0],
+        [0, 0, 1, -5],
+        [0, 0, 0, 1]]
     matrix = np.matmul(matrix_G0, matrix_5G)
     positions = [matrix[0][3], matrix[1][3], matrix[2][3]]
     error, theta = robot.get_angles(positions, rot)
@@ -59,9 +59,10 @@ def calculate_thetas(pos, angles):
 
 def enter_position():
     '''
-    Function to enter with input angles and positions until
-    there exists a set of angles for such set.
-
+    Function to input angles and positions until
+    there exists a set of angles for such set and then 
+    compute the inverse kinematics.
+    
     Parameters
     ----------
     This functions doesn't have any input parameter.

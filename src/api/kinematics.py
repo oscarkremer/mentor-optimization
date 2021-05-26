@@ -2,9 +2,9 @@
 This script execute the kinematics and inverse kinematics computation.
 Firstly, a set of joint angles must be inputed, used in the direct kinematic 
 movement. Then, with the encountered position and orientation the inverse kinematics
-is applied to verify with input joint angles are found.
+is applied to verify if the same joint angles are found.
 
-With the conda environment activate this script can be run using 
+With the conda environment activated this script will run using 
 ----> make kinematics.
 '''
 import numpy as np
@@ -20,4 +20,4 @@ if __name__ == "__main__":
     print('Rotation Matrix: ')
     print(rot)
     print('Thetas: {}'.format(180*np.array(robot.get_angles(pos,rot))/np.pi))
-    print('Inverse Kinematics computation: {}'.format(robot.get_position(robot.get_angles(pos,rot))))
+    print('Inverse Kinematics Computation: {}'.format(robot.get_position(robot.get_angles(pos,rot))))
