@@ -1,13 +1,13 @@
 '''
-Este script define a classe de polinômios.
+This script defines the class of Polynomails.
 
-Este arquivo pode ser importado como um módulo utilizando:
-from src.polinomy import Polinomy
+This class can be imported using:
+from src.polynomial import Polynomial
 '''
 import numpy as np
 
 
-class Polinomy:
+class Polynomial:
     '''
     Classe dos polinômios gerados para criação de trajetórias.
 

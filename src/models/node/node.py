@@ -10,7 +10,7 @@ The use of this class can be found in src/models.
 
 import numpy as np
 from src.mentor import Mentor
-from src.polinomy import Polinomy
+from src.polynomial import Polynomial
 from src.utils.numerical import create_angles
 from src.utils.constants import MAXIMUM_VELOCITY, POINTS
 
@@ -85,7 +85,7 @@ class Node:
         for j in range(self.steps-1):
             sub_polynomies = []
             for i in range(5):
-                sub_polynomies.append(Polinomy(self.joint[i][0][j], self.joint[i][0][j+1], self.joint[i][1][j], self.joint[i][1][j+1], self.joint[i][2][j], self.joint[i][2][j+1], number=POINTS))
+                sub_polynomies.append(Polynomial(self.joint[i][0][j], self.joint[i][0][j+1], self.joint[i][1][j], self.joint[i][1][j+1], self.joint[i][2][j], self.joint[i][2][j+1], number=POINTS))
             polynomies.append(sub_polynomies)
         angles = [np.array([]) for i in range(5)]
         for i in range(self.steps-1):

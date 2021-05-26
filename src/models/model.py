@@ -15,77 +15,68 @@ from src.utils.constants import PATH
 
 class Population:
     '''
-    Classe da população de robôs mentor's que são otimizados
-    quanto à distância percorrida em uma determinada trajetória.
-
-    Atributos
+    Class of Population, a group of Nodes that is going to be
+    optimized according to the distance traveled in a certain 
+    trajectory.
+    
+    Attributes
     ----------
     size : int
-        Inteiro que representa o tamanho da população ao longo
-        da execução do processo de otimização.
+        Size of population after the process of selection.
     initial: int
-        Inteiro que representa o tamanho inicial da população.
+        Initial size of population before genetic optimization.
     generations: int
-        Número de iterações que serão feitas.
+        Number of iterations to be runned.
     p_c: float
-        Probabilidade de ocorrer o processo de cross-over dentro 
-        de um novo elemento da população.
+        Probability of cross-over.
     p_m: float
-        Probabilidade de ocorrer o processo de mutação dentro de 
-        um novo elemento da população.
+        Probability of cross-over.
     mode: srt
-        String que define o modo de cálculo das probabilidades de 
-        cross-over e mutação, caso seja adaptativo as probabilidades 
-        serão calculadas com base no comportamento médio da população.
+        String that defines how the probabilities of mutation and cross-over are
+        encountered. In the case of adaptive mode, the probabilities are computed 
+        using statistical values of the population in a specific generation.
 
-    Métodos
+    Methods
     -------
     initialization(self, theta_i, theta_f, time, steps):
-        Inicializa a população e cria os primeiros polinômios de 
-        acordo com o número de passos definidos.
-
+        Population initialization according to the parameters of the 
+        movement.
     generation(self, population,  theta_i, theta_f, time, steps):
-        Efetua as operações de cross-over e mutação em cima de uma 
-        determinada geração.
-
+        Method to compute and run the genetic algorithm.
     save_csv(self, population, actual_best, best_of_all):
-        Salva as informações de trajetória e desempenhos em um .csv
-
+        Method to save data from the perfomance in a .csv file located 
+        inside the data/ folder.
     prob_adaptation(self, fitness):
-        Efetua a adaptação das probabilidades de acordo com o desempenho médio
-
+        Method to change and compute the probabilities for cross-over and 
+        mutation.
     analysis(self, population):
-        Calcula os parâmetros estatísticos presentes e utilizados na adaptação.
-
+        Method to compute statistical parameter used in adaptive mode.
     selection(self, population, number_bests = 2):
-        Efetua a seleção natural nos elementos da geração.
-
+        Selection operation method.
     cross_over(self, parents, theta_i, theta_f, time, steps):
-        Efetua a operação de cross-over com base em dois pais de um membro.
-
+        Cross-over operation method.
     mutation(self, member, theta_i, theta_f, time, steps):
-        Efetua a operação de mutação em um membro da população.
+        Mutation operation method.
     '''
 
     def __init__(self, initial, size, generations, p_c, p_m, mode='adaptive'):
         '''
-        Parâmetros
+        Constructor method.
+
+        Parameters
         ----------
         size: int
-            Tamanho da população ao longo das gerações
+            Population size defined before the first generation.
         initial: int
-            Tamanho da população na primeira geração
+            Population size defined in the selection stage.
         generations: int
-            Número de gerações que serão simuladas
+            Number of generations used in genetic optimization.
         p_c: float
-            Probabilidade de cross-over, para o adaptivo este valor representa o 
-            fator constante da função de adaptação
+            Probability for cross-over.
         p_m: float
-            Probabilidade de mutação, para o adaptivo este valor representa o 
-            fator constante da função de adaptação
+            Probability for mutation.
         mode: str (opcional)
-            Modo de tratamento das probabilidades de mutação e cross-over, 
-            default é 'adaptive'
+            Probabilities adaptation mode.
         '''
         self.size = size
         self.initial = initial
@@ -96,28 +87,25 @@ class Population:
 
     def initialization(self, theta_i, theta_f, time, steps):
         '''
-        Método para inicialização da primeira geração, 
-        criando o número de elementos definidos com o atributo
-        initial. Com o constraint dos elementos verificado
-        considera-se apenas os membros válidos.
+        Population initialization according to the parameters of the 
+        movement.
 
-        Parâmetros
+        Parameters
         ----------
         theta_i: list
-            Lista de ângulos inicias da junta.
+            List of joints initial angles.
         theta_f: list
-            Lista de ângulos finais que serão ocupados pelo robô.
-        time: list
-            Lista de instantes de tempo.
-        steps: list
-            Lista com número de pontos presentes para divisão 
-            e criação de novos polinômios.
-
-        Retorna
+            List of joints final angles.
+        time: float
+            Duration of the movement (measured in seconds).
+        steps: int
+            Number of polynomial curves that will be generated
+            to create the complete joint trajectory
+        
+        Returns
         -------
         population: list
-            Lista de elementos e métrica, que contém cada elemento
-            com seu respectivo desempenho.
+            List of Node elements and its metrics.
         '''
         population = []
         i = 0
@@ -132,26 +120,21 @@ class Population:
     
     def generation(self, population,  theta_i, theta_f, time, steps):
         '''
-        Método para operação dos manipuladores genéticos em uma deter-
-        minada população. As operação são executadas dentro de um loop
-        para n iterações, onde n é o número de gerações. A melhor traje-
-        tória e o melhor comportamento da população ao longo das gerações
-        são salvos em um arquivo .csv
+        Method to compute and run the genetic algorithm.
 
-        Parâmetros
+        Parameters
         ----------
         population: list
             Lista de elements e métrica, que contém cada elemento
             com seu respectivo desempenho.
         theta_i: list
-            Lista de ângulos inicias da junta.
+            List of joints initial angles.
         theta_f: list
-            Lista de ângulos finais que serão ocupados pelo robô.
+            List of joints final angles.
         time: list
-            Lista de com o vetor de instantes de tempo.
+            Time duration of the movement.
         steps: list
-            Lista com número de pontos presentes para divisão 
-            e criação de novos polinômios.
+            Number of sub-polynomes used to create a joint trajectory.
         '''
         best_of_generation = []
         actual_best = []
@@ -180,19 +163,18 @@ class Population:
 
     def save_csv(self, actual_best, best_of_all):
         '''
-        Método para passar as informações do melhor elemento encontrado
-        e do desempenho da população ao longo do processo de otimização
-        para dataframes no formato .csv.
+        Method to save data from the perfomance and points traveled in the
+        cartesian space in csv's files located 
+        inside the data/ folder.
 
-        Parâmetros
+        Parameters
         ----------
         actual_best: list
-            Lista contendo melhor desempenho da população ao longo
-            das gerações, salvando a informação em points.csv.
-        best_of_all: list
-            Lista contendo a métrica e o melhor elemento, utilizada 
-            para salvar a trajetória no espaço cartesiano e de juntas
-            no arquivo points.csv.
+            List containing best performance in the population in 
+            each generation.
+        best_of_all: Node
+            Element from the Node class that have encountered the 
+            best trajectory from all.
         '''
         dataframe, points = pd.DataFrame(), pd.DataFrame()
         dataframe['distance'] = actual_best
@@ -211,15 +193,13 @@ class Population:
 
     def prob_adaptation(self, fitness):
         '''
-        Método para adaptação das probabilidades de mutação e cross-over, 
-        a otimização é feita com base no desempenho máximo e médio da 
-        população.
+        Method to change and compute the probabilities for cross-over and 
+        mutation.
 
-        Parâmetros
+        Parameters
         ----------
         fitness: float
-            Variável que contém (distancia percorrida)^-1, buscando a minimização
-            desta métrica.
+            Performance metric from a specific element of the Population.
         '''
         if self.mode == 'adaptive':
             if fitness > self.average and (self.maximum-self.average) > 0.00001:
@@ -231,15 +211,12 @@ class Population:
 
     def analysis(self, population):
         '''
-        Método para cálculo dos parâmetros estatísticos vinculados
-        ao processo de adaptação das probabilidades, calcula-se 
-        desvio padrão, valor máximo e médio.
+        Method to compute statistical parameter used in adaptive mode.
 
-        Parâmetros
+        Parameters
         ----------
         population: list
-            Lista de elementos e métrica, que contém cada elemento
-            com seu respectivo desempenho.
+            List of Node elements and its metrics.
         '''
         fitness = [1/member[0] for member in population]
         self.std = np.std(np.array(fitness))
@@ -248,42 +225,35 @@ class Population:
 
     def selection(self, population, number_bests = 2):
         '''
-        Método para seleção dos melhores elementos de um conjunto 
-        de membros, população. 
+        Selection operation method.
 
-        Parâmetros
+        Parameters
         ----------
         population: list
-            Lista de elements e métrica, que contém cada elemento
-            com seu respectivo desempenho.
+            List of Node elements and its metrics.
         number_bests: integer (opcional)
-            Número de melhores elementos a serem selecionados 
+            Number of best element selected.
             (default=2)
 
-        Retorna
+        Returns
         -------
-        Lista dos melhores elementos devidamente ordenados, em ordem 
-        decrescente pela métrica de fit.
+        List of best elements in the population, ordered by the inverse of 
+        traveled distance.
         '''
         return (sorted(population, key = getitem))[0:number_bests]
    
     def cross_over(self, parents):
         '''
-        Método para operação de cross-over em dois elementos pais, 
-        criando um novo elemento para futura geração.
+        Cross-over operation method.
 
-        Parâmetros
+        Parameters
         ----------
         parents: list
-            Lista contendo dois elementos que formarão um novo membro 
-            para a próxima geração.
+            List containing a pair of Node elements.
         
-        Retorna
+        Returns
         -------
-        Novo elemento criado pela troca do material genético presente
-        entre os dois pais. Lista de elements e métrica que contém cada elemento
-        com seu respectivo desempenho.
-        
+        New element created from the exchange of information between the parents.
         '''
         self.prob_adaptation(1/parents[0].dist)
         for i in range(5):
@@ -293,25 +263,24 @@ class Population:
 
     def mutation(self, member, theta_i, theta_f, time, steps):
         '''
-        Método para operação de mutação dentro de um elemento.
+        Mutation operation method.
 
-        Parâmetros
+        Parameters
         ----------
         member: list
-            Lista contendo um elemento e sua métrica.
+            List containin a Node element and its metric.
         theta_i: list
-            Lista de ângulos inicias da junta.
+            List of joints initial angles.
         theta_f: list
-            Lista de ângulos finais que serão ocupados pelo robô.
+            List of joints final angles.
         time: list
-            Lista de com o vetor de instantes de tempo
+            Time duration of the movement.
         steps: list
-            Lista com número de pontos presentes para divisão 
-            e criação de novos polinômios.
+            Number of sub-polynomes used to create a joint trajectory.
 
-        Retorna
+        Returns
         -------
-        Novo elemento fruto da mutação.
+        New element created from the mutation operation.
         '''
         element = Node(theta_i, theta_f, time, steps)
         for i in range(5):

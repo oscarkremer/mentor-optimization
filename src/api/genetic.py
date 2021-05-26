@@ -90,7 +90,7 @@ def main(steps, time, generations, mode, population, cross_over, mutation):
     Parameters
     ----------
     steps: int
-        Number of sub-polynomes used to create a joint trajectory.
+        Number of sub-polynomials used to create a joint trajectory.
     time: float
         Time duration of the movement.
     generations: int
@@ -112,7 +112,7 @@ def main(steps, time, generations, mode, population, cross_over, mutation):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser('Inicialition --- Optimization Algorithm')
+    parser = argparse.ArgumentParser('Inicialization --- Optimization Algorithm')
     parser.add_argument('--mode', default='normal', type=str, 
         choices=['normal', 'adaptive'])
     parser.add_argument('--steps', default=3, type=int)

@@ -63,7 +63,7 @@ Pipeline to generate trajectories for Mentor didactic robot using artificial int
         │       │
         │       └── node.py  
         │
-        ├── polinomy         <- Define Polinomy class
+        ├── polinomy         <- Define Polynomial class
         │   │   
         │   ├── __init__.py
         │   │
