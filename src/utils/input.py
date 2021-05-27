@@ -2,7 +2,7 @@
 This script defines functions for inputs of cartesian or 
 joint space variables.
 
-This module can be importerd using:
+This module can be imported using:
 from src.utils.input import input_angles, input_cartesian
 '''
 import numpy as np
