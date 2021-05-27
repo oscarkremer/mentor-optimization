@@ -4,8 +4,6 @@ for an element of the population of the genetic algorithm.
 
 This package/module can be imported using:
 from src.models.node import Node
-
-The use of this class can be found in src/models. 
 '''
 
 import numpy as np

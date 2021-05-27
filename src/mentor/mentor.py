@@ -152,7 +152,7 @@ class Mentor:
 
     def verify(self, pos, rot, returned_pos, returned_rot):
         '''
-        This method executes verification if computed position is equal to desired position.
+        This method executes verification if computed position is equal to the desired position.
 
         Parameters
         ----------
@@ -161,15 +161,15 @@ class Mentor:
         rot: list
             Rotation matrix of the end effector grip.
         returned_pos: list
-            Lista com informações de posição do atuador final do manipuldor 
-            no espaço cartesiano.
-        returned_rot: list
-            Matriz de rotação do atuador final do manipulador no espaço 
-            cartesiano.
+            List with returned position if ones applies the angles encontered 
+            by the inverse kinematics in the direct kinematics.
+        returned_rot: np.array
+            3x3 matrix representing rotation encountered if ones applies the angles encontered 
+            by the inverse kinematics in the direct kinematics.
         
-        Retorna
+        Returns
         -------
-        Retorna boolean para identifição se a posição está ou não correta.
+        Tag identifying if rotation and position returned matches with the ones pre-specified.
         '''
         diff = pos[:3]-returned_pos[:3]
         rot_norm = np.linalg.norm(rot-returned_rot)
@@ -185,15 +185,15 @@ class Mentor:
         Parameters
         ----------
         theta: Numpy Array
-            Vetor com os ângulos das juntas.
+            Array with joint angles of the robot.
         z_axis: float (opcional)
-            Distância do sistema de coordenadas do atuador final em 
-            relação à última junta rotacional do Mentor.
-
-        Retorna
+            Orthogonal distance to create an extra axis located with the same orientation 
+            of the frame from the theta 5 but with a displacement in the z-axis.
+            
+        Returns
         -------
-        Matrizes de rotação e orientação que definem o sistema de coordenada
-        final do atuador no sistema cartesiano da base.
+        Position array and rotation matrix which define the end effector grip in 
+        the cartesian space.
         '''
         matrix = np.matmul(self.denavit(theta, 3),self.denavit(theta, 4))
         for i in range(3):
@@ -216,7 +216,8 @@ class Mentor:
 
         Returns
         -------
-        Matriz de rotação encontrada a partir dos ângulos alpha-beta-gamma.
+        Rotation 3x3 matrix created from the alpha, beta and gamma angles specified in 
+        the input functions.
         '''
         return [[np.cos(alpha)*np.cos(beta), np.cos(alpha)*np.sin(beta)*np.sin(gamma) - np.sin(alpha)*np.cos(gamma), np.cos(alpha)*np.sin(beta)*np.cos(gamma) + np.sin(alpha)*np.sin(gamma) ],
                         [np.sin(alpha)*np.cos(beta), np.sin(alpha)*np.sin(beta)*np.sin(gamma) + np.cos(alpha)*np.cos(gamma), np.sin(alpha)*np.sin(beta)*np.cos(gamma) - np.cos(alpha)*np.sin(gamma) ],
@@ -236,7 +237,7 @@ class Mentor:
         Returns
         -------
         pos: float
-            3x1 Array that defined the position of end effector grip.
+            3x1 Array that defines the position of end effector grip.
         np.array(rot):
             3x3 Matrix that defines the orientation of end effector grip.
         '''
@@ -251,10 +252,10 @@ class Mentor:
         Parameters
         ----------
         theta: list
-            Lista com ângulos das juntas em determinado instante.
+            List of joint angles.    
         i: int
-            Index que definirá entre quais sistemas coordenados está acontecendo 
-            está transformação de coordenadas.
+            Index to determine which transformation matrix is being calculated.
+            The index i represents transformation from i to i+1 frame.
 
         Returns
         -------
