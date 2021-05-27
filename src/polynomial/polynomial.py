@@ -1,60 +1,59 @@
 '''
-Este script define a classe de polinômios.
+This script defines the class of Polynomails.
 
-Este arquivo pode ser importado como um módulo utilizando:
-from src.polinomy import Polinomy
+This class can be imported using:
+from src.polynomial import Polynomial
 '''
 import numpy as np
 
 
-class Polinomy:
+class Polynomial:
     '''
-    Classe dos polinômios gerados para criação de trajetórias.
+    Class of polynomial curves used during the joint trajectory generation. 
 
-    Atributos
+    Attributes
     --------
     t_i: float
-        Instante inicial da curva.
+        Initial instant of the movement.
     t_f: float
-        Instante final da curva.
+        Final instant of the movement.
     theta_i: list
-        Lista contendo posições angulares iniciais de todas juntas.       
+        List of joints initial angles.
     theta_f: list
-        Lista contendo posições angulares finais de todas juntas.
+        List of joints final angles.
     omega_i: list
-        Lista contendo velocidades angulares iniciais de todas juntas.
+        List of joints initial angular velocities.
     omega_f: list
-        Lista contendo velocidades angulares finais de todas juntas.
+        List of joints final angular velocities.
 
-    Métodos
+    Methods
     -------    
     generate_coeff(self):
-        Resolução da multiplicação matricial que calcula
-        os coeficientes dos polinômios de acordo com ângulos iniciais,
-        finais e instantes de tempo inicial e final.
-      
+        Method to compute the coefficients in the polynomials according to
+        inital and final angles, and also time instants.      
     generate_points(self, number):
-        Geração dos pontos dos polinômios e das derivadas 
-        destes polinomios.
-    '''   
+        Method to create points in the discrete representation of the polynomial curves.
+    '''  
     def __init__(self, t_i, t_f, theta_i, theta_f, omega_i, omega_f, number=10000):
         '''
-        Parâmetros
+        Polynomial class constructor.
+
+        Parameters
         ----------
         t_i: float
-            Instante inicial da curva
+            Initial instant of the movement.
         t_f: float
-            Instante final da curva
+            Final instant of the movement.
         theta_i: list
-            Lista contendo posições angulares iniciais, de todas juntas.
+            List of joints initial angles.
         theta_f: list
-            Lista contendo posições angulares finais, de todas juntas.
+            List of joints final angles.
         omega_i: list
-            Lista contendo velocidades angulares iniciais, de todas juntas.
+            List of joints initial angular velocities.
         omega_f: list
-            Lista contendo velocidades angulares finais, de todas juntas.
+            List of joints final angular velocities.
         number: int
-            Inteiro que descreve numero de pontos do polinômio
+            Amount of sampled points of the polynomial curve.
         '''
         self.steps = number
         self.t_i = t_i
@@ -68,9 +67,8 @@ class Polinomy:
 
     def generate_coeff(self):
         '''
-        Método para resolução da multiplicação matricial que calcula
-        os coeficientes dos polinômios de acordo com ângulos iniciais,
-        finais e instantes de tempo inicial e final.
+        Method to compute the coefficients in the polynomials according to
+        inital and final angles, and also time instants.      
         '''
         times = [[1, self.t_i, np.power(self.t_i, 2), np.power(self.t_i, 3)],
             [1, self.t_f, np.power(self.t_f, 2), np.power(self.t_f, 3)],
@@ -83,13 +81,12 @@ class Polinomy:
       
     def generate_points(self, number):
         '''
-        Método para geração dos pontos dos polinômios e das derivadas 
-        destes polinomios.
+        Method to create points in the discrete representation of the polynomial curves.
 
-        Parâmetros
+        Parameters
         ----------
         number : int
-            Inteiro que representa o número de pontos do polinômio.
+            Value of sampled points of the polynomial curve.
         '''
         points = np.linspace(self.t_i, self.t_f, int(number))
         self.generate_coeff()

@@ -1,10 +1,9 @@
 '''
-Este script define a classe Mentor, incluindo métodos
-matemáticos para cálculo de cinématica direta e inversa
-do manipulador, orientação e posição do atuador final,
-verificação de posição e correções de quadrante. 
+This script defines the Mentor class package, where there are
+specified as Mentor methods the computations of direct and
+inverse kinematics
 
-Este arquivo pode ser importado como um módulo utilizando:
+This package can be imported with:
 from src.mentor import Mentor
 '''
 import itertools
@@ -12,47 +11,48 @@ import numpy as np
 
 class Mentor:
     '''
-    Classe de um robo mentor. A classe será definida
-    por elementos que obedeçam as leis de cinemática do robô mentor,
-    além de limitações (constraints) de velocidade e posição.
+    Mentor Class. This class represents the mentor didactic robot, obeying 
+    the laws of direct and inverse kinematics, and any physical constraint
+    of movement, both angulars position or velocity. 
 
-    Atributos
+    Attributes
     ----------
     alpha : list
-        List contendo tempo, angulos e velocidades discretizadas.
+        Angle list of Denavit Hartenberg parameter.
     a: list
-        Métrica de distância percorrida do elemento.
+        List of perpendicular distance between joints.
     d: list
-        Coordenadas cartesianos do elemento ao longo do tempo.
-
-    Métodos
+        List of perpendicular distance between links.
+    
+    Methods
     -------
     test_inverse_kinematics(self, pos, rot, tag_theta1=True, tag_theta2=True, tag_theta3=True):  
-        Método de teste de todos os ângulos, para verificação se os quadrantes se encontram corretos.
+        Method to test with a certain set of condition represents a possible situation for the robot.
     get_angles(self, pos, rot):
-        Cálculo de cinemática inversa para todas as possibilidades de quadrantes entre os três primeiros
-        atuadores rotacionais do robô.
+        Method to test with all possible scenarious of angles.
     _inverse_kinematics(self, pos, orientation, tag_theta1=True, tag_theta2=True, tag_theta3=True):
-        Cálculo da cinemática inversa para uma cenário específico.
+        Angles computation in inverse kinematics.
     verify(self, pos, rot, returned_pos, returned_rot):
-        Verificação se posição encontrada pela cinemática é compatível com o desejado.
+        Verification if computed position is equal to desired position.
     get_position(self, theta, z_axis=0):
-        Aplicação de cinemática direta para encontrar posição do atuador.
+        Method to apply direct kinematics 
     get_orientation(self, alpha, beta, gamma):
-        Aplicação de cinemática direta para encontrar orientação do atuador.    
+        Method to get end effector orientation consideration Alpha, Beta and
+        Gamma - XYZ angles.
     separate(self, matrix, z_axis):
-        Separação da matriz extendida nas parcelas de rotação e translação.    
+        Method to separate a 4x4 matrix in rotational matrix and position array.
     denavit(self, theta, i):
-        Aplicação de denavit hartenberg para encontrar matriz de transformação.
+        Method to apply the Denavit-Hartenberg to find the transformation matrix.
     fix_quadrante(self, sin, cos):
-        Ajustar quadrante a partir de sin e cos de ângulo.
+        Method to adjust the angle quadrant from its sine and cosine.
     fix_theta(self, param, tag, angle):
-        Ajustar quadrante a partir de qualquer parâmetro de entrada possivel.
+        Method to adjust the angle quadrant from any possible set o parameters.
     '''
     def __init__(self):
         '''
-        Não há parâmetros de entrada neste método. Apenas a definição dos
-        parâmetros de Denavit-Hartenberg.
+        The constructor method doesn't use any parameters. 
+        This method is only responsible to define the Denavit-Hartenberg 
+        parameters as Mentor attributes.
         '''
         self.alpha = [0, -np.pi/2, 0, 0, -np.pi/2]
         self.a = [0, 0, 17.2739, 15.5, 0]
@@ -60,32 +60,27 @@ class Mentor:
 
     def test_inverse_kinematics(self, pos, rot, tag_theta1=True, tag_theta2=True, tag_theta3=True):  
         '''
-        Método de teste de todos os ângulos, fazendo o cálculo da cinemática inversa e 
-        a verificação se os quadrantes estão corretos. Ajustes dos ângulos com base nas 
-        tags especificadas. A função de cinemática inversa é chamada para encontrar os ângulos, 
-        para então serem passados para função verify que testará se os mesmos estão corretos.
+        Method to test with a certain set of condition represents a possible situation for the robot.
 
-        Parâmetros
+        Parameters
         ----------
         pos: list
-            Lista com informações de posição do atuador final do manipuldor 
-            no espaço cartesiano.
+            List with position in the cartesian space of the end effector grip.
         rot: list
-            Matriz de rotação do atuador final do manipulador no espaço 
-            cartesiano.
-        tag_theta1: bool(opcional):
-            Tag de verificação se há erro no quadrante do ângulo 1.
-        tag_theta2: bool(opcional):
-            Tag de verificação se há erro no quadrante do ângulo 2.
-        tag_theta3: bool(opcional):
-            Tag de verificação se há erro no quadrante do ângulo 3.
-
-        Retorna
+            Rotation matrix of the end effector grip.
+        tag_theta1: bool(optional):
+            Tag to identify error in theta-1
+        tag_theta2: bool(optional):
+            Tag to identify error in theta-2
+        tag_theta3: bool(optional):
+            Tag to identify error in theta-3
+ 
+        Returns
         -------
         tag:
-            Verificação de há erro ou não na cinemática inversa.
+            Verification if there was any error in inverse kinematics.
         theta:
-            Lista com ângulos calculados.
+            List containing the joint angles encountered.
         '''
 
         theta = self._inverse_kinematics(pos, rot, tag_theta1=tag_theta1, tag_theta2=tag_theta2, tag_theta3=tag_theta3)
@@ -95,25 +90,21 @@ class Mentor:
 
     def get_angles(self, pos, rot):
         '''
-        Método para efetuar cinemática inversa em todos os cenários possíveis
-        de erros de quadrantes. Com base nisso é possível identificar se a 
-        posição/orientação inserida pelo usuário é atingível ou não pelo manipulador.
+        Method to test with all possible scenarious of angles.
 
-        Parâmetros
+        Parameters
         ----------
         pos: list
-            Lista com informações de posição do atuador final do manipuldor 
-            no espaço cartesiano.
+            List with position in the cartesian space of the end effector grip.
         rot: list
-            Matriz de rotação do atuador final do manipulador no espaço 
-            cartesiano.
+            Rotation matrix of the end effector grip.
 
-        Retorna
+        Returns
         -------
         tag:
-            Booleano que identifica (se verdadeiro) se há erro e a posição é impossível
+            Tag that identifies if position is or isn't possible.
         theta:
-            Lista com ângulos calculados para cinemática inversa.
+            List of joint angles returned in case position/orientation is possible.
         '''
         for element in itertools.product([True, False],[False, True],[False, True]):
             tag, theta = self.test_inverse_kinematics(pos, rot, element[0], element[1], element[2])
@@ -123,29 +114,25 @@ class Mentor:
 
     def _inverse_kinematics(self, pos, orientation, tag_theta1=True, tag_theta2=True, tag_theta3=True):
         '''
-        Método para cálculo da cinemática inversa. Esta função implementa o equacionamento
-        mostrado na documentação do projeto. A correção de quadrante é feita com base
-        nas tags de cada ângulo.
+        Angles computation in inverse kinematics.
 
-        Parâmetros
+        Parameters
         ----------
         pos: list
-            Lista com informações de posição do atuador final do manipuldor 
-            no espaço cartesiano.
+            List with position in the cartesian space of the end effector grip.
         rot: list
-            Matriz de rotação do atuador final do manipulador no espaço 
-            cartesiano.
-        tag_theta1: bool(opcional):
-            Tag de verificação se há erro no quadrante do ângulo 1.
-        tag_theta2: bool(opcional):
-            Tag de verificação se há erro no quadrante do ângulo 2.
-        tag_theta3: bool(opcional):
-            Tag de verificação se há erro no quadrante do ângulo 3.
-        
-        Retorna
+            Rotation matrix of the end effector grip.
+        tag_theta1: bool(optional):
+            Tag to identify error in theta-1.
+        tag_theta2: bool(optional):
+            Tag to identify error in theta-2.
+        tag_theta3: bool(optional):
+            Tag to identify error in theta-3.
+         
+        Returns
         -------
         theta:
-            Lista com ângulos calculados para cinemática inversa.
+            List of joint angles returned in case position/orientation is possible.
         '''
         theta = []
         theta1 = np.nan_to_num(self.fix_theta(pos, tag_theta1, 'theta1'))
@@ -165,27 +152,24 @@ class Mentor:
 
     def verify(self, pos, rot, returned_pos, returned_rot):
         '''
-        Método para verificação se os ângulos encontrados realmente
-        atingem a posição solicitada.
+        This method executes verification if computed position is equal to the desired position.
 
-        Parâmetros
+        Parameters
         ----------
         pos: list
-            Lista com informações de posição correta do atuador final do manipuldor 
-            no espaço cartesiano.
+            List with position in the cartesian space of the end effector grip.
         rot: list
-            Matriz de rotação correta do atuador final do manipulador no espaço 
-            cartesiano.
+            Rotation matrix of the end effector grip.
         returned_pos: list
-            Lista com informações de posição do atuador final do manipuldor 
-            no espaço cartesiano.
-        returned_rot: list
-            Matriz de rotação do atuador final do manipulador no espaço 
-            cartesiano.
+            List with returned position if ones applies the angles encontered 
+            by the inverse kinematics in the direct kinematics.
+        returned_rot: np.array
+            3x3 matrix representing rotation encountered if ones applies the angles encontered 
+            by the inverse kinematics in the direct kinematics.
         
-        Retorna
+        Returns
         -------
-        Retorna boolean para identifição se a posição está ou não correta.
+        Tag identifying if rotation and position returned matches with the ones pre-specified.
         '''
         diff = pos[:3]-returned_pos[:3]
         rot_norm = np.linalg.norm(rot-returned_rot)
@@ -196,20 +180,20 @@ class Mentor:
 
     def get_position(self, theta, z_axis=0):
         '''
-        Método para encontrar posição a partir da cinemática direta.
+        Method to apply direct kinematics in a set of inputed joint angles.
 
-        Parâmetros
+        Parameters
         ----------
         theta: Numpy Array
-            Vetor com os ângulos das juntas.
+            Array with joint angles of the robot.
         z_axis: float (opcional)
-            Distância do sistema de coordenadas do atuador final em 
-            relação à última junta rotacional do Mentor.
-
-        Retorna
+            Orthogonal distance to create an extra axis located with the same orientation 
+            of the frame from the theta 5 but with a displacement in the z-axis.
+            
+        Returns
         -------
-        Matrizes de rotação e orientação que definem o sistema de coordenada
-        final do atuador no sistema cartesiano da base.
+        Position array and rotation matrix which define the end effector grip in 
+        the cartesian space.
         '''
         matrix = np.matmul(self.denavit(theta, 3),self.denavit(theta, 4))
         for i in range(3):
@@ -218,21 +202,22 @@ class Mentor:
     
     def get_orientation(self, alpha, beta, gamma):
         '''
-        Método para verificação dos constraints. Com base na velocidade
-        máxima permitida definida nas constantes.
+        Method to get end effector orientation consideration Alpha, Beta and
+        Gamma - XYZ angles.
 
-        Parâmetros
+        Parameters
         ----------
         alpha: float
-            Ângulo de orientação do eixo X.
+            Orientation angle of X axis.
         beta: float
-            Ângulo de orientação do eixo Y.
+            Orientation angle of Y axis.
         gamma: float
-            Ângulo de orientação do eixo Z.            .
+            Orientation angle of Z axis.
 
-        Retorna
+        Returns
         -------
-        Matriz de rotação encontrada a partir dos ângulos alpha-beta-gamma.
+        Rotation 3x3 matrix created from the alpha, beta and gamma angles specified in 
+        the input functions.
         '''
         return [[np.cos(alpha)*np.cos(beta), np.cos(alpha)*np.sin(beta)*np.sin(gamma) - np.sin(alpha)*np.cos(gamma), np.cos(alpha)*np.sin(beta)*np.cos(gamma) + np.sin(alpha)*np.sin(gamma) ],
                         [np.sin(alpha)*np.cos(beta), np.sin(alpha)*np.sin(beta)*np.sin(gamma) + np.cos(alpha)*np.cos(gamma), np.sin(alpha)*np.sin(beta)*np.cos(gamma) - np.cos(alpha)*np.sin(gamma) ],
@@ -240,23 +225,21 @@ class Mentor:
 
     def separate(self, matrix, z_axis):
         '''
-        Método para separação da matriz de Denavit-Hartenberg 
-        da última junta nas parcelas de posição e orientação.
+        Method to separate a 4x4 matrix in rotational matrix and position array.
 
-        Parâmetros
+        Parameters
         ----------
-        theta: Numpy Array
-            Vetor com os ângulos das juntas.
+        Matrix: Numpy Array
+            Joint angle 4x4 matrix.
         z_axis: float (opcional)
-            Distância do sistema de coordenadas do atuador final em 
-            relação à última junta rotacional do Mentor.
+            Distance in Z Axis to define an extra frame.
 
-        Retorna
+        Returns
         -------
         pos: float
-            Matriz 3x3 de rotação do robô que define a orientação da garra.
+            3x1 Array that defines the position of end effector grip.
         np.array(rot):
-            Matriz 3x3 de rotação do robô que define a orientação da garra.
+            3x3 Matrix that defines the orientation of end effector grip.
         '''
         pos =  np.matmul(matrix, [0,0,z_axis,1])
         rot = [matrix[i][:-1] for i in range(3)]
@@ -264,21 +247,20 @@ class Mentor:
 
     def denavit(self, theta, i):
         '''
-        Método para criação de matriz de Denavit-Hartenberg de uma
-        determinada transição de sistemas coordenados.
+        Method to apply the Denavit-Hartenberg to find the transformation matrix.
 
-        Parâmetros
+        Parameters
         ----------
         theta: list
-            Lista com ângulos das juntas em determinado instante.
+            List of joint angles.    
         i: int
-            Index que definirá entre quais sistemas coordenados está acontecendo 
-            está transformação de coordenadas.
+            Index to determine which transformation matrix is being calculated.
+            The index i represents transformation from i to i+1 frame.
 
-        Retorna
+        Returns
         -------
-        Matrix 4x4 extendida e triangular por blocos que contém 
-            matriz de rotação (3x3) e vetor de posição (3x1).
+        4x4 Block Triangular Matrix which contain both Rotation matrix (3x3) and 
+            the position vector (3x1).
         '''
         return  [[np.cos(theta[i]), -np.sin(theta[i]),  0,   self.a[i]],
             [np.sin(theta[i])*np.cos(self.alpha[i]), np.cos(theta[i])*np.cos(self.alpha[i]), -np.sin(self.alpha[i]), -np.sin(self.alpha[i])*self.d[i]],
@@ -287,18 +269,18 @@ class Mentor:
 
     def fix_quadrante(self, sin, cos):
         '''
-        Método para correção de quadrante a partir do par sin/cos.
+        Method to adjust the angle quadrant from its sine and cosine.
 
-        Parâmetros
+        Parameters
         ----------
         sin: float
-            Tempo de duração da simulação.
+            Angle sine.
         cos: float
-            Tempo de duração da simulação.
-
-        Retorna
+            Angle cossine.
+        
+        Returns
         -------
-        Ângulo ajustado para o quadrante correto
+        Angle adjusted to the right quadrant.
         '''
         if sin >= 0 and cos >= 0:
             return np.arcsin(abs(sin))
@@ -311,22 +293,21 @@ class Mentor:
 
     def fix_theta(self, param, tag, angle):
         '''
-        Método correção dos três primeiros ângulos do robô.
+        Method to adjust the angle quadrant in a more generic way.
 
-        Parâmetros
+        Parameters
         ----------
-        parm: float
-            Parâmetro que será analisado para o ajuste, podendo ser, 
-            lista de posição (x,y), sin e cos.
+        param: float
+            Used parameter to identify if the angle is correct. Param can be
+            a list of (x, y), sine or cossine.
         tag: boolean
-            Tag de verificação que determina se o ângulo está correto ou não.
+            Tag that identifies if any error have already been detected.
         angle: str
-            Descritivo sobre qual ângulo é, permitindo vincular com 
-            operação matemática especifica.
-
-        Retorna
+            Specific angle analysed.
+            
+        Returns
         -------
-        Ângulo corrigido para o quadrante correto.
+        Angle adjusted to the right quadrant.
         '''
         if angle=='theta1':
             if abs(param[0]) < 0.001:  

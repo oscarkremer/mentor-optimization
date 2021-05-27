@@ -1,22 +1,22 @@
 '''
-Este script define as funções de input, tanto de variáveis
-no espaço de juntas quanto espaço cartesiano.
+This script defines functions for inputs of cartesian or 
+joint space variables.
 
-Este arquivo pode ser importado como um módulo utilizando:
+This module can be imported using:
 from src.utils.input import input_angles, input_cartesian
 '''
 import numpy as np
 
 def input_angles():
     '''
-    Função para input de ângulos do robô para cálculo da cinemática
-    inversa. Os angulos das juntas são inseridos em graus, convertidos
-    para radianos e, por fim, retornados. 
-
-    Retorna
+    Functions to enter with joint angles to further compute the 
+    direct kinematics. The angles are entered in degrees and then converted to 
+    radian.
+    
+    Returns
     -------
     angles
-        Lista com os ângulos das juntas do robô.
+        List of joint angles.
     '''
     angles = np.zeros(5)
     for i in range(5):
@@ -26,17 +26,18 @@ def input_angles():
 
 def input_cartesian():
     '''
-    Função para input das variaveis de posição e orientação do atuador 
-    final do robo no plano cartesiano. Os ângulos alpha, beta e gamma
-    são tratados em radianos mas entrados em graus. 
+    Function to input cartesian variables of position and orientation.
+    The orientation angles alpha, beta and gamma (XYZ angles) are inputed 
+    in degrees but then converted to radian.
 
-    Retorna
+    Returns
     -------
-    pos
-        Booleano que será verdadeiro caso o par posição/orientação
-        inseridas não seja alcançável no espaço de tarefa.
-    angles
-        Lista com os ângulos da orientação do robô (alpha, beta, gamma).
+    pos: numpy array
+        Array containing the three coordinates of a point in the cartesian 
+        space.
+    angles: numpy array
+        Array containing the angles alpha, beta and gamma (XYZ angles) to represent 
+        the orientation of the end effector grip of the robot.
     '''
     pos = np.zeros(3)
     angles = np.zeros(3)

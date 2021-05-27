@@ -1,8 +1,7 @@
 '''
-Este script define constantes presentes dentro do código.
+This script defines constants that are used in the project. 
 
-As variáveis podem ser importadas como um módulo utilizando,
-para o caso da importação da variável VARIABLE.
+This variables can be imported individually using:
 from src.utils.constants import VARIABLE
 '''
 
