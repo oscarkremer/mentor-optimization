@@ -19,5 +19,5 @@ if __name__ == "__main__":
     print(pos)
     print('Rotation Matrix: ')
     print(rot)
-    print('Thetas: {}'.format(180*np.array(robot.get_angles(pos,rot))/np.pi))
-    print('Inverse Kinematics Computation: {}'.format(robot.get_position(robot.get_angles(pos,rot))))
+    print('Thetas: {}'.format(180*np.array(robot.get_angles(pos,rot)[1])/np.pi))
+    print('Inverse Kinematics Computation: {}'.format(robot.get_position(robot.get_angles(pos,rot)[1])))

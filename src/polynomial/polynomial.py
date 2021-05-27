@@ -14,17 +14,17 @@ class Polynomial:
     Attributes
     --------
     t_i: float
-        Instante inicial da curva.
+        Initial instant of the movement.
     t_f: float
-        Instante final da curva.
+        Final instant of the movement.
     theta_i: list
-        Lista contendo posições angulares iniciais de todas juntas.       
+        List of joints initial angles.
     theta_f: list
-        Lista contendo posições angulares finais de todas juntas.
+        List of joints final angles.
     omega_i: list
-        Lista contendo velocidades angulares iniciais de todas juntas.
+        List of joints initial angular velocities.
     omega_f: list
-        Lista contendo velocidades angulares finais de todas juntas.
+        List of joints final angular velocities.
 
     Methods
     -------    
@@ -36,18 +36,20 @@ class Polynomial:
     '''  
     def __init__(self, t_i, t_f, theta_i, theta_f, omega_i, omega_f, number=10000):
         '''
+        Polynomial class constructor.
+
         Parameters
         ----------
         t_i: float
-            Instante inicial da curva
+            Initial instant of the movement.
         t_f: float
-            Instante final da curva
+            Final instant of the movement.
         theta_i: list
             List of joints initial angles.
         theta_f: list
             List of joints final angles.
         omega_i: list
-            List of joints initila angular velocities.
+            List of joints initial angular velocities.
         omega_f: list
             List of joints final angular velocities.
         number: int
