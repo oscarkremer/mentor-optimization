@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := check
 PYTHON_INTERPRETER = python3
-PROJECT_NAME := mentor
+PROJECT_NAME := mentor-optimization
 BLUE = \033[0;34m
 DEFAULT = \033[0m
 RED = \033[0;31m
