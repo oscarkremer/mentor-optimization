@@ -7,7 +7,7 @@ from src.models.node import Node
 '''
 
 import numpy as np
-from src.mentor import Mentor
+from pymentor import Mentor
 from src.polynomial import Polynomial
 from src.utils.numerical import create_angles
 from src.utils.constants import MAXIMUM_VELOCITY, POINTS
