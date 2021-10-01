@@ -17,6 +17,7 @@ dependencies:
     - pytest
     - pandas
     - scipy
+    - pymentor
     - seaborn
     - matplotlib
     - setuptools

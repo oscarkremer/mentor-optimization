@@ -16,8 +16,8 @@ With the conda environment activate this script will run using
 '''
 import argparse
 import numpy as np
+from pymentor import Mentor
 from src.models import Population
-from src.mentor import Mentor
 from src.utils.input import input_cartesian
 
 

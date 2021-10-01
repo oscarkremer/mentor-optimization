@@ -8,7 +8,7 @@ With the conda environment activated this script will run using
 ----> make kinematics.
 '''
 import numpy as np
-from src.mentor import Mentor
+from pymentor import Mentor
 from src.utils.input import input_angles
 
 if __name__ == "__main__":
