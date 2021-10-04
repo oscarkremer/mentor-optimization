@@ -10,10 +10,9 @@ See: `Makefile` to know other commands.
 
 ==============================
 
-Pipeline to generate trajectories for Mentor didactic robot using artificial intelligence optimization algorithms
-
-
-Mentor is a Python library to implement a computational model of the Mentor Didactic Robotic Arm. This model was first published in the work *A Genetic Approach for Trajectory Optimization Applied to a Didactic Robot*. The library includes:
+Pipeline to generate trajectories for Mentor didactic robot using artificial intelligence optimization, more specifically genetic algorithms. This model was 
+first published in the work *A Genetic Approach for Trajectory Optimization Applied to a Didactic Robot*, together with the results for modeling direct and inverse
+kinematics of the mentor robotics arms, which resulted in the [pymentor package](https://github.com/oscarkremer/pymentor). The library includes:
 
 * Direct kinematics based on Denavit-Hartenberg parameters, where variables represented in the cartesian coordinate space are transformed to joint space.
 * Inverse kinematics to encounter joint angles based on position and orientation matrix.
@@ -34,28 +33,24 @@ $ make install
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
 
+```bash
+$ make
+$ make install
+```
 
-```python
-import numpy as np
-from pymentor import Mentor
-# direct kinematics example
-angles = [np.pi/6]*5
-robot = Mentor()
-pos, rot = robot.get_position(angles)
-# pos is 4x1 vector 
-# rot is 3x3 rotation matrix
-       
-pos = np.array([24.21323027, 13.97951501, -17.07885504, 1.0])
-rot = np.array([[0.59049287, 0.23642905, -0.77163428],
-    [-0.23642905, -0.86349762, -0.44550326],
-    [-0.77163428, 0.44550326, -0.4539905 ]])
-# pos is 4x1 vector 
-# rot is 3x3 rotation matrix
-angles = robot.get_angles(pos,rot)
+```bash
+$ make
+$ make install
+```
+
+```bash
+$ make
+$ make install
+```
 
 
-# creating rotational matrix from alpha-beta-gamma angles
-rot = robot.get_orientation(np.pi/6, np.pi/6, np.pi/6)
+```bash
+make genetics
 ```
 
 ## Contributing
