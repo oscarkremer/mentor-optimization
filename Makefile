@@ -24,37 +24,21 @@ install: dirs
 	@conda env update -f environment.yml
 
 
-dirs:
+dirs:	## Make command to create folder for results dataframes.
 	@echo "---> Creating data folder for results"
 	@mkdir -p data/results
 	@echo "---> Done"
 
-kinematics:
-	@echo "---> Running Kinematics-Algorithms"
-	@$(PYTHON_INTERPRETER) src/api/kinematics.py 
 
 genetic: ##test
 	@echo "---> Running Genetic Algorithms to Optimize Trajectory Planning"
 	@$(PYTHON_INTERPRETER) src/api/genetic.py --population $(POPULATION) --generations $(GENERATIONS)
 
 
-help:           ## Show this help.
+help:	## Help method to list all available make commands.
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
  
-# Everything below is an example
- 
-target00:       ## This message will show up when typing 'make help'
-	@echo does nothing
- 
-target01:       ## This message will also show up when typing 'make help'
-	@echo does something
- 
-# Remember that targets can have multiple entries (if your target specifications are very long, etc.)
-target02:       ## This message will show up too!!!
-target02: target00 target01
-	@echo does even more
 
-
-clean:
+clean:	## Method for removing cached and .pyc or .pyo files.
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
