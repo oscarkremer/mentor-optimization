@@ -7,7 +7,7 @@ from src.utils.input import input_angles, input_cartesian
 '''
 import numpy as np
 
-def input_angles():
+def input_angles() -> np.array:
     '''
     Functions to enter with joint angles to further compute the 
     direct kinematics. The angles are entered in degrees and then converted to 
@@ -24,7 +24,7 @@ def input_angles():
         angles[i] = np.pi*angles[i]/180
     return angles
 
-def input_cartesian():
+def input_cartesian() -> tuple:
     '''
     Function to input cartesian variables of position and orientation.
     The orientation angles alpha, beta and gamma (XYZ angles) are inputed 

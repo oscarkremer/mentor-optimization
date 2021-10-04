@@ -5,6 +5,7 @@ This class can be imported using:
 from src.polynomial import Polynomial
 '''
 import numpy as np
+from src.utils.constants import POINTS
 
 
 class Polynomial:
@@ -34,7 +35,7 @@ class Polynomial:
     generate_points(self, number):
         Method to create points in the discrete representation of the polynomial curves.
     '''  
-    def __init__(self, t_i, t_f, theta_i, theta_f, omega_i, omega_f, number=10000):
+    def __init__(self, t_i:float, t_f:float, theta_i:list, theta_f:list, omega_i:list, omega_f:list, number:int=POINTS):
         '''
         Polynomial class constructor.
 
@@ -79,7 +80,7 @@ class Polynomial:
         for index in range(self.a.shape[0]):
              self.a[index] = coef[index][0]
       
-    def generate_points(self, number):
+    def generate_points(self, number:int):
         '''
         Method to create points in the discrete representation of the polynomial curves.
 

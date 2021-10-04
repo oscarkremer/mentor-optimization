@@ -57,7 +57,7 @@ def calculate_thetas(pos, angles):
     return error, theta
 
 
-def enter_position():
+def enter_position() -> tuple:
     '''
     Function to input angles and positions until
     there exists a set of angles for such set and then 
