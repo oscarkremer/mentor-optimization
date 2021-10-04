@@ -1,15 +1,8 @@
-# Genetic Algorithms for Trajectory Optimization
+# Genetic Algorithms for Trajectory Optimization of the Mentor Robotic Arm
+
 
 Here we submitted all code snippets to help with artificial intelligence coding to deal with an 
 optimization problem, where the trajectory planning of a didactic robot is tackled.
-
-
-## Install
-
-```bash
-$ make
-$ make install
-```
 
 See: `Makefile` to know other commands.
 
@@ -19,7 +12,6 @@ See: `Makefile` to know other commands.
 
 Pipeline to generate trajectories for Mentor didactic robot using artificial intelligence optimization algorithms
 
-# Pymentor
 
 Mentor is a Python library to implement a computational model of the Mentor Didactic Robotic Arm. This model was first published in the work *A Genetic Approach for Trajectory Optimization Applied to a Didactic Robot*. The library includes:
 
@@ -33,12 +25,14 @@ Mentor is a Python library to implement a computational model of the Mentor Dida
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install pymentor.
 
 ```bash
-pip install pymentor
+$ make
+$ make install
 ```
 
 ## Usage
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+
 
 
 ```python
@@ -81,7 +75,7 @@ General Public License version 3.0 [GPL-3.0](https://choosealicense.com/licenses
 
 Oscar Schmitt Kremer - [Linkedin](https://www.linkedin.com/in/oscar-kremer/) [Email](oscar.s.kremer@hotmail.com)
 
-Project Link: [pymentor Repository](https://github.com/oscarkremer/pymentor)
+Project Link: [mentor-optimization Repository](https://github.com/oscarkremer/mentor-optimization)
 
 ## References
 

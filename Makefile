@@ -17,9 +17,12 @@ setup: check_environment
 	@cp -n .env.example .env
 	@echo "---> To complete setup please run \n---> source activate $(PROJECT_NAME)"
 
+
+install:	## Installation method. Creates folder named as 'dirs' and conda environment with dependences.
 install: dirs
 	@echo "---> Installing dependencies"
 	@conda env update -f environment.yml
+
 
 dirs:
 	@echo "---> Creating data folder for results"
@@ -30,19 +33,27 @@ kinematics:
 	@echo "---> Running Kinematics-Algorithms"
 	@$(PYTHON_INTERPRETER) src/api/kinematics.py 
 
-genetic:
+genetic: ##test
 	@echo "---> Running Genetic Algorithms to Optimize Trajectory Planning"
 	@$(PYTHON_INTERPRETER) src/api/genetic.py --population $(POPULATION) --generations $(GENERATIONS)
 
-help:
-	@echo "--- List of Commands ---"
-	@echo "--- ${WHITE}install${DEFAULT}: Start installation of environment"
-	@echo "--- ${WHITE}setup${DEFAULT}: Check environment and setup variables"
-	@echo "--- ${WHITE}dirs${DEFAULT}: Create directory to save .csv files"
-	@echo "--- ${WHITE}help${DEFAULT}: See list of possible commands"
-	@echo "--- ${WHITE}kinematics${DEFAULT}: Run kinematics calculations for Mentor Robot"
-	@echo "--- ${WHITE}genetic${DEFAULT}: Start running genetic algorithm for trajectory optimization"
-	@echo "--- ${WHITE}clean${DEFAULT}: Remove unecessary files"
+
+help:           ## Show this help.
+	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
+ 
+# Everything below is an example
+ 
+target00:       ## This message will show up when typing 'make help'
+	@echo does nothing
+ 
+target01:       ## This message will also show up when typing 'make help'
+	@echo does something
+ 
+# Remember that targets can have multiple entries (if your target specifications are very long, etc.)
+target02:       ## This message will show up too!!!
+target02: target00 target01
+	@echo does even more
+
 
 clean:
 	find . -type f -name "*.py[co]" -delete
