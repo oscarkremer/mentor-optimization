@@ -18,7 +18,7 @@ setup: check_environment
 	@echo "---> To complete setup please run \n---> source activate $(PROJECT_NAME)"
 
 
-install:	## Installation method. Creates folder named as 'dirs' and conda environment with dependences.
+install: ##Installation method. Creates folder named as 'dirs' and conda environment with dependences.
 install: dirs
 	@echo "---> Installing dependencies"
 	@conda env update -f environment.yml
@@ -30,7 +30,7 @@ dirs:	## Make command to create folder for results dataframes.
 	@echo "---> Done"
 
 
-genetic: ##test
+genetic: ##Method to run genetic optimizatino for a certain trajectory.
 	@echo "---> Running Genetic Algorithms to Optimize Trajectory Planning"
 	@$(PYTHON_INTERPRETER) src/api/genetic.py --population $(POPULATION) --generations $(GENERATIONS)
 
