@@ -8,4 +8,4 @@ from src.utils.constants import VARIABLE
 TOLERANCE = 0.001
 MAXIMUM_VELOCITY = 6
 PATH = 'data/results'
-POINTS = 1000
+POINTS = 500

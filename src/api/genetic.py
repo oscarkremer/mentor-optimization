@@ -16,7 +16,7 @@ With the conda environment activate this script will run using
 '''
 import argparse
 import numpy as np
-from pymentor import Mentor
+from pymentor import Mentor, InvalidPosition, InvalidOrientation, InvalidPair
 from src.models import Population
 from src.utils.input import input_cartesian
 
@@ -53,8 +53,7 @@ def calculate_thetas(pos, angles):
         [0, 0, 0, 1]]
     matrix = np.matmul(matrix_G0, matrix_5G)
     positions = [matrix[0][3], matrix[1][3], matrix[2][3]]
-    error, theta = robot.get_angles(positions, rot)
-    return error, theta
+    return robot.get_angles(positions, rot)
 
 
 def enter_position() -> tuple:
@@ -77,9 +76,15 @@ def enter_position() -> tuple:
     error = True
     while error:
         pos, angles = input_cartesian()    
-        error, theta = calculate_thetas(pos, angles)
-        if error:
-            print('Error !!! \n Position and/or orientation not possible !!! \n Please test other values!')
+        try:
+            theta = calculate_thetas(pos, angles)
+            error = False
+        except InvalidPosition as e:
+            print('Error !!! \n Position not possible !!! \n Please test other values!')
+        except InvalidOrientation as e:
+            print('Error !!! \n Orientation not possible !!! \n Please test other values!')
+        except InvalidPair as e:
+            print('Error !!! \n Position and orientation not possible !!! \n Please test other values!')
     return theta, pos
 
 
@@ -119,7 +124,7 @@ if __name__ == "__main__":
     parser.add_argument('--steps', default=3, type=int)
     parser.add_argument('--time', default=10, type=float)
     parser.add_argument('--generations', default=15, type=int)
-    parser.add_argument('--population', default=15, type=int)
+    parser.add_argument('--population', default=10, type=int)
     parser.add_argument('--cross-over', default=0.9, type=float)
     parser.add_argument('--mutation', default=0.5, type=float)
     args = parser.parse_args()

@@ -26,8 +26,13 @@ It's essential to have installed the miniconda or anaconda, where a virtual envi
 
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+After running the *make install* command, one can try the genetic optimization proposed. However, first is necessary to run the following command in the terminal:
 
+```bash
+$ conda activate mentor-optimization
+```
+
+Inside the project folder the *help* command can be used to see all available make commands.
 
 ```bash
 $ make help
