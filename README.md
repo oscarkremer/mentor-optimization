@@ -12,21 +12,17 @@ See: `Makefile` to know other commands.
 
 Pipeline to generate trajectories for Mentor didactic robot using artificial intelligence optimization, more specifically genetic algorithms. This model was 
 first published in the work *A Genetic Approach for Trajectory Optimization Applied to a Didactic Robot*, together with the results for modeling direct and inverse
-kinematics of the mentor robotics arms, which resulted in the [pymentor package](https://github.com/oscarkremer/pymentor). The library includes:
-
-* Direct kinematics based on Denavit-Hartenberg parameters, where variables represented in the cartesian coordinate space are transformed to joint space.
-* Inverse kinematics to encounter joint angles based on position and orientation matrix.
-* Exception and error treatment in case of impossible position/orientation pairs.
-* Method to deal with alpha, beta and gamma angles to encounter orientation 3x3 matrix based on XYZ angles.
+kinematics of the mentor robotics arms, which resulted in the [pymentor package](https://github.com/oscarkremer/pymentor). 
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install pymentor.
+To run the scripts presented in this repository one can install it using the following command:
 
 ```bash
-$ make
 $ make install
 ```
+
+It's essential to have installed the miniconda or anaconda, where a virtual environment entitled as *mentor-optimization* will be created. 
 
 ## Usage
 
@@ -34,23 +30,11 @@ Use this space to show useful examples of how a project can be used. Additional 
 
 
 ```bash
-$ make
-$ make install
+$ make help
 ```
 
 ```bash
-$ make
-$ make install
-```
-
-```bash
-$ make
-$ make install
-```
-
-
-```bash
-make genetics
+$ make genetic
 ```
 
 ## Contributing
