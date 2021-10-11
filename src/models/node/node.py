@@ -5,9 +5,8 @@ for an element of the population of the genetic algorithm.
 This package/module can be imported using:
 from src.models.node import Node
 '''
-
 import numpy as np
-from src.mentor import Mentor
+from pymentor import Mentor
 from src.polynomial import Polynomial
 from src.utils.numerical import create_angles
 from src.utils.constants import MAXIMUM_VELOCITY, POINTS
@@ -42,7 +41,7 @@ class Node:
         Method for testing if the robot isn't violating any physycal or
         practical constraint due the polynomes randomly generated.
     '''
-    def __init__(self, thetas_i, thetas_f, time, steps):
+    def __init__(self, thetas_i:list, thetas_f:list, time:float, steps:int):
         '''
         Node class constructor.
 
@@ -83,21 +82,21 @@ class Node:
         for j in range(self.steps-1):
             sub_polynomies = []
             for i in range(5):
-                sub_polynomies.append(Polynomial(self.joint[i][0][j], self.joint[i][0][j+1], self.joint[i][1][j], self.joint[i][1][j+1], self.joint[i][2][j], self.joint[i][2][j+1], number=POINTS))
+                sub_polynomies.append(Polynomial(self.joint[i][0][j], self.joint[i][0][j+1], self.joint[i][1][j], self.joint[i][1][j+1], self.joint[i][2][j], self.joint[i][2][j+1]))
             polynomies.append(sub_polynomies)
         angles = [np.array([]) for i in range(5)]
         for i in range(self.steps-1):
             for j in range(len(angles)):
-                if i == 0:
-                    angles[j] = np.concatenate((angles[j], polynomies[i][j].thetas))
-                else:
+                if not i:
                     angles[j] = np.concatenate((angles[j], polynomies[i][j].thetas[1:]))
+                else:
+                    angles[j] = np.concatenate((angles[j], polynomies[i][j].thetas))
         index = np.min([angles[i].shape[0] for i in range(5)])
         self.angle = [angles[i][0:index] for i in range(5)]
         dist = 0 
         for i, angle in enumerate(np.transpose(self.angle)):
             new_pos, rot = mentor.get_position(angle, z_axis=5)
-            if i != 0:
+            if i:
                 dist+=np.sqrt((old_pos[0]-new_pos[0])**2+(old_pos[1]-new_pos[1])**2+(old_pos[2]-new_pos[2])**2)
             old_pos = new_pos
             points.append(new_pos[0:3])

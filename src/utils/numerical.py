@@ -10,7 +10,7 @@ from src.utils.numerical import create_angles
 import random
 import numpy as np
 
-def create_angles(theta_i, theta_f, final_time, steps):
+def create_angles(theta_i:list, theta_f:list, final_time:float, steps:int) -> tuple:
     '''
     Function to create the sub-points in the random polynomial 
     that the robots must follows in their joints.
@@ -22,7 +22,7 @@ def create_angles(theta_i, theta_f, final_time, steps):
         List of joints initial angles.
     theta_f: list
         List of joints final angles.
-    time: float
+    final_time: float
         Duration of the movement (measured in seconds).
     steps: int
         Number of polynomial curves that will be generated

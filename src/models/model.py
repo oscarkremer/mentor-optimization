@@ -85,7 +85,7 @@ class Population:
         self.p_m = p_m
         self.mode = mode
 
-    def initialization(self, theta_i, theta_f, time, steps):
+    def initialization(self, theta_i, theta_f, time, steps) -> list:
         '''
         Population initialization according to the parameters of the 
         movement.
@@ -109,6 +109,7 @@ class Population:
         '''
         population = []
         i = 0
+        self.time = time
         while i < self.initial:
             element = Node(theta_i, theta_f, time, steps)
             element.find_points()
@@ -161,7 +162,7 @@ class Population:
         self.save_csv(actual_best, best_of_all)
 
 
-    def save_csv(self, actual_best, best_of_all):
+    def save_csv(self, actual_best, best_of_all, results_path=PATH):
         '''
         Method to save data from the perfomance and points traveled in the
         cartesian space in csv's files located 
@@ -186,10 +187,11 @@ class Population:
         points['x'] = x
         points['y'] = y
         points['z'] = z
+        points['time'] = np.linspace(0, self.time, len(x))
         for i in range(5):
             points['theta{}'.format(i+1)] = best_of_all[1].angle[i]
-        points.to_csv('data/results/points.csv', index=False)
-        dataframe.to_csv('data/results/results.csv', index=False)
+        points.to_csv('{}/points.csv'.format(PATH), index=False)
+        dataframe.to_csv('{}/results.csv'.format(PATH), index=False)
 
     def prob_adaptation(self, fitness):
         '''
