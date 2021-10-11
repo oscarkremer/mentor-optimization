@@ -44,7 +44,13 @@ To run genetic optimization use the following command:
 $ make genetic
 ```
 
-Insert the initial and final position.
+Insert the initial and final position, if they are not valid points, please, try again until no error is detected. 
+
+If any update is done related with the libraries, please modify the enviroment *.yml* file and run:
+
+```bash
+$ make update
+```
 
 
 ## Contributing
