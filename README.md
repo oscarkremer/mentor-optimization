@@ -4,15 +4,9 @@
 Here we submitted all code snippets to help with artificial intelligence coding to deal with an 
 optimization problem, where the trajectory planning of a didactic robot is tackled.
 
-See: `Makefile` to know other commands.
-
 ## Artificial Intelligence Project
 
-==============================
-
-Pipeline to generate trajectories for Mentor didactic robot using artificial intelligence optimization, more specifically genetic algorithms. This model was 
-first published in the work *A Genetic Approach for Trajectory Optimization Applied to a Didactic Robot*, together with the results for modeling direct and inverse
-kinematics of the mentor robotics arms, which resulted in the [pymentor package](https://github.com/oscarkremer/pymentor). 
+Pipeline to generate trajectories for Mentor didactic robot using artificial intelligence optimization, more specifically genetic algorithms. This model was first published in the work *A Genetic Approach for Trajectory Optimization Applied to a Didactic Robot*, together with the results for modeling direct and inverse kinematics of the mentor robotics arms, which resulted in the [pymentor package](https://github.com/oscarkremer/pymentor). 
 
 ## Installation
 
@@ -51,7 +45,6 @@ If any update is done related with the libraries, please modify the enviroment *
 ```bash
 $ make update
 ```
-
 
 ## Contributing
 
