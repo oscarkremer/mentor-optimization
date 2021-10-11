@@ -109,6 +109,7 @@ class Population:
         '''
         population = []
         i = 0
+        self.time = time
         while i < self.initial:
             element = Node(theta_i, theta_f, time, steps)
             element.find_points()
@@ -186,6 +187,7 @@ class Population:
         points['x'] = x
         points['y'] = y
         points['z'] = z
+        points['time'] = np.linspace(0, self.time, len(x))
         for i in range(5):
             points['theta{}'.format(i+1)] = best_of_all[1].angle[i]
         points.to_csv('{}/points.csv'.format(PATH), index=False)
