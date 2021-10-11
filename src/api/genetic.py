@@ -44,13 +44,13 @@ def calculate_thetas(pos, angles):
     robot = Mentor()
     rot  = robot.get_orientation(angles[0], angles[1], angles[2])
     matrix_G0 = [[rot[0][0], rot[0][1], rot[0][2], pos[0]],
-        [rot[1][0], rot[1][1], rot[1][2], pos[1]],
-        [rot[2][0], rot[2][1], rot[2][2], pos[2]],
-        [0, 0, 0, 1]]
+                [rot[1][0], rot[1][1], rot[1][2], pos[1]],
+                [rot[2][0], rot[2][1], rot[2][2], pos[2]],
+                [0, 0, 0, 1]]
     matrix_5G = [[1, 0, 0, 0],
-        [0, 1, 0, 0],
-        [0, 0, 1, -5],
-        [0, 0, 0, 1]]
+                [0, 1, 0, 0],
+                [0, 0, 1, -5],
+                [0, 0, 0, 1]]
     matrix = np.matmul(matrix_G0, matrix_5G)
     positions = [matrix[0][3], matrix[1][3], matrix[2][3]]
     return robot.get_angles(positions, rot)
@@ -73,18 +73,21 @@ def enter_position() -> tuple:
     pos
         List containing position inputed initially.
     '''
-    error = True
-    while error:
-        pos, angles = input_cartesian()    
+    theta = []
+    while not theta:
         try:
+            pos, angles = input_cartesian()    
             theta = calculate_thetas(pos, angles)
-            error = False
+            if not theta:
+                print(' Internal error ! \n Please test other values!')
         except InvalidPosition as e:
-            print('Error !!! \n Position not possible !!! \n Please test other values!')
+            print(' Error ! \n Position not possible ! \n Please test other values!')
         except InvalidOrientation as e:
-            print('Error !!! \n Orientation not possible !!! \n Please test other values!')
+            print(' Error ! \n Orientation not possible ! \n Please test other values!')
         except InvalidPair as e:
-            print('Error !!! \n Position and orientation not possible !!! \n Please test other values!')
+            print(' Error ! \n Position and orientation not possible ! \n Please test other values!')
+        except Exception as e:
+            print(e)
     return theta, pos
 
 

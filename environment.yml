@@ -18,7 +18,7 @@ dependencies:
     - scipy==1.5.4
     - pymentor==0.1.1
     - seaborn==0.11.2
-    - matplotlib
+    - matplotlib==3.3.4
     - setuptools==58.2.0
     - tqdm==4.62.3
     - wheel==0.37.0

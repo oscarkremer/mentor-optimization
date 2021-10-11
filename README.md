@@ -38,9 +38,14 @@ Inside the project folder the *help* command can be used to see all available ma
 $ make help
 ```
 
+To run genetic optimization use the following command:
+
 ```bash
 $ make genetic
 ```
+
+Insert the initial and final position.
+
 
 ## Contributing
 

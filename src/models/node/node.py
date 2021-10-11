@@ -58,6 +58,7 @@ class Node:
             to create the complete joint trajectory 
         '''
         times, thetas, omegas = [], [], []
+        print(thetas_i, thetas_f)
         angles_elements = [list(create_angles(theta_i, theta_f, time, steps)) for theta_i, theta_f in zip(thetas_i, thetas_f)]
         for i in range(5):
             deltas, delta_thetas, delta_omegas = create_angles(thetas_i[i], thetas_f[i], time, steps)

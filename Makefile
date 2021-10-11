@@ -26,7 +26,7 @@ test_environment: ##Run verification step for requisites
 
 
 update: ##Update method to change dependences.
-	@echo "---> Installing dependencies"
+	@echo "---> Updating dependencies"
 	@conda env update -q -f environment.yml
 
 
